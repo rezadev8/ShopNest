@@ -17,10 +17,10 @@ export class Product {
   @Column()
   name: string;
 
-  @Column({ type: 'int4' })
+  @Column({ type: 'int' })
   price: string;
 
-  @Column({ type: 'varchar2' })
+  @Column({ type: 'varchar' })
   description: string;
 
   @Column()
