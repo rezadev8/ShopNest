@@ -1,9 +1,9 @@
-import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
-import { IsNull, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { encodePassword } from 'src/utils/bcrypt';
-import { plainToClass, plainToInstance } from 'class-transformer';
+import { plainToClass } from 'class-transformer';
 import { SerializedUser } from './types';
 import { CreateUserDto } from 'src/auth/dtos/create-user.dto';
 
