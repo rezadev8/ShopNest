@@ -16,7 +16,11 @@ export class ProductService {
   ) {}
 
   findOne(id: number) {
-    return this.productRepository.findOneBy({ id });
+      return this.productRepository.findOne({ where:{id} });
+  }
+
+  findAll(){
+    return this.productRepository.find();
   }
 
   async createProduct(newProdct: NewProductDto, user: userInterface) {
