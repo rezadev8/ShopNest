@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -14,21 +15,20 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({unique:false})
   name: string;
 
-  @Column({ type: 'int' })
-  price: string;
+  @Column({ type: 'int'  , unique:false})
+  price: number;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar' , unique:false })
   description: string;
 
-  @Column()
+  @Column({unique:false})
   cover: string;
 
-  @OneToOne(() => User)
-  @JoinColumn()
-  owner: string;
+  @ManyToOne(() => User , user => user.products)
+  owner: User;
 
   @CreateDateColumn()
   createdAt: number;

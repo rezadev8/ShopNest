@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/users.entity';
 import { AuthModule } from './auth/auth.module';
-import { ProductsModule } from './products/products.module';
+import { ProductModule } from './products/products.module';
+import { Product } from './products/entities/products.entity';
 
 @Module({
   imports: [
@@ -16,12 +17,12 @@ import { ProductsModule } from './products/products.module';
       username: 'root',
       password: '',
       database: 'found_404',
-      entities: [User],
+      entities: [User , Product],
       synchronize: true,
     }),
-    UsersModule,
+    UserModule,
     AuthModule,
-    ProductsModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],

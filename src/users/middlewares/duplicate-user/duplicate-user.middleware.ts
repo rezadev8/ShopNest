@@ -5,12 +5,12 @@ import {
   Request,
   Response,
 } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UserService } from 'src/users/users.service';
 import { IsNull } from 'typeorm';
 
 @Injectable()
 export class DuplicateUserMiddleware implements NestMiddleware {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UserService) {}
   async use(@Request() req, @Response() res, next: () => void) {
     const {phone , email} = req.body;
     const findUser = await this.usersService.findUserByProperties({
