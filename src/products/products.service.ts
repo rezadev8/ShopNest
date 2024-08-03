@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { NewProductDto } from './dtos/new-product.dto';
 import { UserService } from 'src/users/users.service';
 import { userInterface } from 'src/users/types/user';
+import { SerializedUser } from 'src/users/types/serializedUser';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class ProductService {
@@ -33,7 +35,9 @@ export class ProductService {
         owner: findUser,
       });
 
-      return this.productRepository.save(product);
+      const saveProduct = await this.productRepository.save(product);
+
+      return {...saveProduct , owner:plainToClass(SerializedUser, saveProduct.owner)}
     } catch (error) {
       console.log(error);
       
