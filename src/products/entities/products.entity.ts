@@ -1,10 +1,13 @@
+import { Basket } from 'src/baskets/entities/baskets';
 import { User } from 'src/users/entities/users.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -29,6 +32,9 @@ export class Product {
 
   @ManyToOne(() => User , user => user.products)
   owner: User;
+
+  @ManyToOne(() => Basket , basket => basket.products)
+  basket:Basket
 
   @CreateDateColumn()
   createdAt: number;

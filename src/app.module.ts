@@ -7,6 +7,8 @@ import { User } from './users/entities/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { ProductModule } from './products/products.module';
 import { Product } from './products/entities/products.entity';
+import { BasketsModule } from './baskets/baskets.module';
+import { Basket } from './baskets/entities/baskets';
 
 @Module({
   imports: [
@@ -17,12 +19,13 @@ import { Product } from './products/entities/products.entity';
       username: 'root',
       password: '',
       database: 'found_404',
-      entities: [User , Product],
+      entities: [User , Product , Basket],
       synchronize: true,
     }),
     UserModule,
     AuthModule,
     ProductModule,
+    BasketsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

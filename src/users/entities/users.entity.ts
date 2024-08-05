@@ -1,8 +1,10 @@
+import { Basket } from 'src/baskets/entities/baskets';
 import { Product } from 'src/products/entities/products.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
