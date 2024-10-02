@@ -4,6 +4,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { NewProductDto } from './dtos/new-product.dto';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { userInterface } from 'src/users/types/user';
+import { Request } from 'express';
 
 @Controller('products')
 export class ProductController {
@@ -27,5 +28,13 @@ export class ProductController {
     @Get()
     getAll(){
         return this.productService.findAll();
+    }
+
+    @HttpCode(200)
+    @Post('search')
+    searchProduct(@Req() req:Request){
+        const {productName} = req.body;
+        
+        return this.productService.searchProduct(productName)
     }
 }

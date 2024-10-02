@@ -1,7 +1,7 @@
 import { HttpException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { NewProductDto } from './dtos/new-product.dto';
 import { UserService } from 'src/users/users.service';
 import { userInterface } from 'src/users/types/user';
@@ -46,6 +46,15 @@ export class ProductService {
       console.log(error);
       
       throw new InternalServerErrorException("Uh-oh! We hit a snag creating your product!")
+    }
+  }
+
+  searchProduct(value:string){
+    try {
+      return this.productRepository.find({where:{name:Like(`%${value}%`)}})
+    } catch (error) {
+      console.log('Error in search products ' + error);
+      throw new InternalServerErrorException('Uh-oh! We hit a snag searching on products!');
     }
   }
 }
