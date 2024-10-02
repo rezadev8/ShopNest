@@ -10,6 +10,8 @@ import { Product } from './products/entities/products.entity';
 import { BasketsModule } from './baskets/baskets.module';
 import { Basket } from './baskets/entities/baskets';
 import { BasketProduct } from './baskets/entities/basket-product';
+import { BlogModule } from './blog/blog.module';
+import { Post } from './blog/entities/posts';
 
 @Module({
   imports: [
@@ -20,13 +22,14 @@ import { BasketProduct } from './baskets/entities/basket-product';
       username: 'root',
       password: '',
       database: 'found_404',
-      entities: [User , Product , Basket , BasketProduct],
+      entities: [User , Product , Basket , BasketProduct ,  Post],
       synchronize: true,
     }),
     UserModule,
     AuthModule,
     ProductModule,
     BasketsModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,5 @@
 import { Basket } from 'src/baskets/entities/baskets';
+import { Post } from 'src/blog/entities/posts';
 import { Product } from 'src/products/entities/products.entity';
 import {
   Column,
@@ -26,6 +27,9 @@ export class User {
 
   @OneToMany(() => Product, (product) => product.owner)
   products: Product[];
+
+  @OneToMany(() => Post , post => post.author)
+  posts:Post[]
 
   @CreateDateColumn()
   createdAt: number;
