@@ -9,14 +9,15 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { BasketProduct } from './basket-product';
 
 @Entity('baskets')
 export class Basket {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Product ,  product => product.basket)
-  products:Product[];
+  @OneToMany(() => BasketProduct, basketProduct => basketProduct.basket)
+  basketProducts: BasketProduct[];
 
   @OneToOne(() => User)
   @JoinColumn()

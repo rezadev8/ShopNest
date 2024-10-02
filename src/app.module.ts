@@ -9,6 +9,7 @@ import { ProductModule } from './products/products.module';
 import { Product } from './products/entities/products.entity';
 import { BasketsModule } from './baskets/baskets.module';
 import { Basket } from './baskets/entities/baskets';
+import { BasketProduct } from './baskets/entities/basket-product';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { Basket } from './baskets/entities/baskets';
       username: 'root',
       password: '',
       database: 'found_404',
-      entities: [User , Product , Basket],
+      entities: [User , Product , Basket , BasketProduct],
       synchronize: true,
     }),
     UserModule,

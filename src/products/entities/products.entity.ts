@@ -1,3 +1,4 @@
+import { BasketProduct } from 'src/baskets/entities/basket-product';
 import { Basket } from 'src/baskets/entities/baskets';
 import { User } from 'src/users/entities/users.entity';
 import {
@@ -18,23 +19,23 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({unique:false})
+  @Column({ unique: false })
   name: string;
 
-  @Column({ type: 'int'  , unique:false})
+  @Column({ type: 'int', unique: false })
   price: number;
 
-  @Column({ type: 'varchar' , unique:false })
+  @Column({ type: 'varchar', unique: false })
   description: string;
 
-  @Column({unique:false})
+  @Column({ unique: false })
   cover: string;
 
-  @ManyToOne(() => User , user => user.products)
+  @ManyToOne(() => User, (user) => user.products)
   owner: User;
 
-  @ManyToOne(() => Basket , basket => basket.products)
-  basket:Basket
+  @OneToMany(() => BasketProduct, basketProduct => basketProduct.product)
+  basketProducts: BasketProduct[];
 
   @CreateDateColumn()
   createdAt: number;
