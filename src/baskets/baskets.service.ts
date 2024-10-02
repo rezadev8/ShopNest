@@ -13,6 +13,8 @@ import { UserService } from 'src/users/users.service';
 import { Product } from 'src/products/entities/products.entity';
 import { BasketProduct } from './entities/basket-product';
 import { User } from 'src/users/entities/users.entity';
+import { plainToClass } from 'class-transformer';
+import { SerializedBasketProduct } from './types/serializedBasketProduct';
 
 @Injectable()
 export class BasketService {
@@ -51,7 +53,7 @@ export class BasketService {
   async findOneBasketProduct(basketId: number, productId: number) {
     return await this.basketProductRepository.findOne({
       where: { basket: { id: basketId }, product: { id: productId } },
-      relations: { basket: { basketProducts: true } },
+      relations: { product: true },
     });
   }
 
@@ -86,7 +88,13 @@ export class BasketService {
       });
     }
 
-    return await this.basketProductRepository.save(basketProduct);
+    await this.basketProductRepository.save(basketProduct);
+
+    return {
+      message: 'Product added to basket successfuly',
+      product: basketProduct.product,
+      quantity:basketProduct.quantity
+    };
   }
 
   async deleteProductProductBasket(productBasket: BasketProduct) {
@@ -102,7 +110,10 @@ export class BasketService {
   async handleDeleteProduct(product: Product, userId: number) {
     try {
       const findBasketProduct = await this.basketProductRepository.findOne({
-        where: { product:{id:product.id}, basket: { user: { id: userId } } },
+        where: {
+          product: { id: product.id },
+          basket: { user: { id: userId } },
+        },
       });
 
       if (!findBasketProduct)
@@ -119,7 +130,7 @@ export class BasketService {
         message: 'The product has been removed from your shopping cart',
       };
     } catch (error) {
-      if(error.response) throw error
+      if (error.response) throw error;
       throw new InternalServerErrorException(
         'There was a problem removing the product from your shopping cart',
       );
