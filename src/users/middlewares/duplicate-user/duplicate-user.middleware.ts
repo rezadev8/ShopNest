@@ -18,7 +18,7 @@ export class DuplicateUserMiddleware implements NestMiddleware {
     });
 
     if (findUser) {
-      throw new HttpException('کاربری با این مشخصات وجود داره', 409);
+      throw new HttpException("A user with these details already exists!", 409);
     } else {
       next()
     }

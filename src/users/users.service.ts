@@ -30,7 +30,7 @@ export class UserService {
       };
     } catch (error) {
       console.log(error);
-      throw new InternalServerErrorException('متاستفانه مشکلی در هنگام ساخت حساب کاربریت به وجود اومده!')
+      throw new InternalServerErrorException("Unfortunately, there was an issue creating your account!")
     }
   }
 

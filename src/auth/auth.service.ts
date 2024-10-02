@@ -28,18 +28,18 @@ export class AuthService {
   ): Promise<{ access_token: string; msg: string }> {
     const user = await this.usersService.findOneByUserName(username);
     if (!user)
-      throw new NotFoundException('عجیبه! با این مشخصات کاربری پیدا نکردم :(');
+      throw new NotFoundException("Strange! Couldn't find a user with those details :(");
     const comparePasswordResult = await comparePassword(pass, user.password);
 
     if (!comparePasswordResult) {
-      throw new UnauthorizedException('رمز عبورت درست نیست دوست من :!');
+      throw new UnauthorizedException("Your password’s not right, my friend! 😅");
     }
 
     const payload = { id: user.id, email: user.email };
 
     return {
       access_token: await this.jwtService.signAsync(payload),
-      msg: 'بفرماید اینم توکن شما ',
+      msg: "Here you go, your token!",
     };
   }
 }

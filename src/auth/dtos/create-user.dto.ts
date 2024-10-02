@@ -1,10 +1,10 @@
 import { IsEmail, IsPhoneNumber, IsStrongPassword } from 'class-validator';
 
 export class CreateUserDto {
-  @IsEmail({} , {message:"لطفا یک ایمیل معتبر وارد کن."})
+  @IsEmail({} , {message:"Please enter a valid email."})
   email: string;
-  @IsPhoneNumber('IR' , {message:"لطفا یک شماره موبایل معتبر وارد کن."})
+  @IsPhoneNumber('IR' , {message:"Please enter a valid phone number."})
   phone: number;
-  @IsStrongPassword({minLength:8} , {message:"رمز عبورت رو حداقل 8 کاراکتر وارد کنی ممنونت میشم :)"})
+  @IsStrongPassword({minLength:8} , {message:"Password needs to be at least 8 characters, thanks! :)"})
   password:string;
 }

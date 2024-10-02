@@ -3,8 +3,8 @@ import {
 } from 'class-validator';
 
 export class LoginDto {
-  @IsNotEmpty({message:"ایمیل و یا شماره تماست رو وارد کن عزیز."})
+  @IsNotEmpty({message:"Please enter your email or phone number, buddy!"})
   username: string;
-  @IsNotEmpty({message:"دوست من رمز عبور رو ندی من چطور لاگینت کنم :/"})
+  @IsNotEmpty({message:"My friend, how am I supposed to log you in without a password? :/"})
   password: string;
 }

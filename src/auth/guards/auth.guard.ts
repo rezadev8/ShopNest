@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-    const unauthorizedMessage = "مشکوک میزنی دوست من. دوباره احراز هویت کن لطفا :)"
+    const unauthorizedMessage = "You're looking a bit suspicious, my friend. Please re-authenticate! :)"
     
 
     if (!token) {
