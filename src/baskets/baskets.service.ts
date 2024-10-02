@@ -13,8 +13,6 @@ import { UserService } from 'src/users/users.service';
 import { Product } from 'src/products/entities/products.entity';
 import { BasketProduct } from './entities/basket-product';
 import { User } from 'src/users/entities/users.entity';
-import { plainToClass } from 'class-transformer';
-import { SerializedBasketProduct } from './types/serializedBasketProduct';
 
 @Injectable()
 export class BasketService {
