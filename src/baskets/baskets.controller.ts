@@ -11,7 +11,7 @@ export class BasketsController {
   @UseGuards(AuthGuard)
   @Get('/basket')
   getBasket(@CurrentUser() user: userInterface){
-    return this.basketService.findOne(user.id)
+    return this.basketService.getBasketProducts(user.id)
   }
 
   @UseGuards(AuthGuard)
