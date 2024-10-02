@@ -21,8 +21,11 @@ export class BasketsController {
     return this.basketService.addProductToBasket(product, user);
   }
 
+  @UseGuards(AuthGuard)
   @Delete('/delete/:productId')
-  deleteProduct() {
-    return this.basketService;
+  deleteProduct(@Req() req, @CurrentUser() user: userInterface) {
+    const product = req.product;
+
+    return this.basketService.handleDeleteProduct(product , user.id);
   }
 }

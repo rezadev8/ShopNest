@@ -41,7 +41,7 @@ export class BasketService {
     }
   }
 
-  async findOne(userId) {
+  async findOne(userId: number) {
     return await this.basketRepository.findOne({
       where: { user: { id: userId } },
       relations: { basketProducts: true, user: true },
@@ -65,7 +65,7 @@ export class BasketService {
 
   async addProductToBasket(product: Product, userInfo: userInterface) {
     const user = await this.userService.findOne(userInfo.id);
-    let userBasket = await this.findOne(user);
+    let userBasket = await this.findOne(user.id);
     if (!userBasket) {
       const createUserBasket = await this.createUserBasket(user);
       userBasket = await this.saveUserBasket(createUserBasket);
@@ -89,7 +89,40 @@ export class BasketService {
     return await this.basketProductRepository.save(basketProduct);
   }
 
-  async deleteProduct() {
-    // const product =
+  async deleteProductProductBasket(productBasket: BasketProduct) {
+    try {
+      return await this.basketProductRepository.delete(productBasket);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'There was a problem removing the product from your shopping cart!',
+      );
+    }
+  }
+
+  async handleDeleteProduct(product: Product, userId: number) {
+    try {
+      const findBasketProduct = await this.basketProductRepository.findOne({
+        where: { product:{id:product.id}, basket: { user: { id: userId } } },
+      });
+
+      if (!findBasketProduct)
+        throw new NotFoundException('This product is not in your basket!');
+
+      if (findBasketProduct.quantity > 1) {
+        findBasketProduct.quantity--;
+        await this.basketProductRepository.save(findBasketProduct);
+      } else {
+        await this.deleteProductProductBasket(findBasketProduct);
+      }
+
+      return {
+        message: 'The product has been removed from your shopping cart',
+      };
+    } catch (error) {
+      if(error.response) throw error
+      throw new InternalServerErrorException(
+        'There was a problem removing the product from your shopping cart',
+      );
+    }
   }
 }
