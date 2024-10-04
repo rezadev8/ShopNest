@@ -2,9 +2,9 @@ import { Body, Controller, Get, HttpCode, NotFoundException, Param, Post, Req, U
 import { ProductService } from './products.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { NewProductDto } from './dtos/new-product.dto';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { userInterface } from 'src/users/types/user';
 import { Request } from 'express';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 
 @Controller('products')
 export class ProductController {

@@ -22,6 +22,9 @@ export class Post {
   @Column()
   thumbnail:string;
 
+  @Column()
+  keyword:string;
+
   @ManyToOne(() => User , user => user.posts)
   author:User;
 

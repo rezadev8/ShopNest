@@ -1,3 +1,4 @@
+import { Role } from 'src/auth/enums/role.enum';
 import { Basket } from 'src/baskets/entities/baskets';
 import { Post } from 'src/blog/entities/posts';
 import { Product } from 'src/products/entities/products.entity';
@@ -30,6 +31,13 @@ export class User {
 
   @OneToMany(() => Post , post => post.author)
   posts:Post[]
+
+  @Column({
+    type:'enum',
+    enum:Role,
+    default:Role.USER
+  })
+  role:Role
 
   @CreateDateColumn()
   createdAt: number;
