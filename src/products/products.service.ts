@@ -1,4 +1,9 @@
-import { HttpException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
 import { Like, Repository } from 'typeorm';
@@ -7,6 +12,7 @@ import { UserService } from 'src/users/users.service';
 import { userInterface } from 'src/users/types/user';
 import { SerializedUser } from 'src/users/types/serializedUser';
 import { plainToClass } from 'class-transformer';
+import { EditProductDto } from './dtos/edit-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -16,10 +22,10 @@ export class ProductService {
   ) {}
 
   findOne(id: number) {
-      return this.productRepository.findOne({ where:{id} });
+    return this.productRepository.findOne({ where: { id } });
   }
 
-  findAll(){
+  findAll() {
     return this.productRepository.find();
   }
 
@@ -28,7 +34,8 @@ export class ProductService {
 
     const findUser = await this.userService.findOne(user.id);
 
-    if (!findUser) throw new NotFoundException("Oops! Couldn't find that user!");
+    if (!findUser)
+      throw new NotFoundException("Oops! Couldn't find that user!");
 
     try {
       const product = this.productRepository.create({
@@ -41,20 +48,46 @@ export class ProductService {
 
       const saveProduct = await this.productRepository.save(product);
 
-      return {...saveProduct , owner:plainToClass(SerializedUser, saveProduct.owner)}
+      return {
+        ...saveProduct,
+        owner: plainToClass(SerializedUser, saveProduct.owner),
+      };
     } catch (error) {
       console.log(error);
-      
-      throw new InternalServerErrorException("Uh-oh! We hit a snag creating your product!")
+
+      throw new InternalServerErrorException(
+        'Uh-oh! We hit a snag creating your product!',
+      );
     }
   }
 
-  searchProduct(value:string){
+  async editProduct(id: number, editProductDto: EditProductDto) {
     try {
-      return this.productRepository.find({where:{name:Like(`%${value}%`)}})
+      const product = await this.findOne(id);
+      if (!product) throw new NotFoundException('Product not found!');
+
+      await this.productRepository.save({ ...product, ...editProductDto });
+
+      return {message:'Product edited successfuly' , product:{id}}
+    } catch (error) {
+      if (!error.response)
+        throw new InternalServerErrorException(
+          'Uh-oh! We hit a snag editing your product!',
+        );
+      throw error;
+    }
+  }
+
+  searchProduct(value: string) {
+    try {
+      return this.productRepository.find({
+        where: { name: Like(`%${value}%`) },
+      });
     } catch (error) {
       console.log('Error in search products ' + error);
-      throw new InternalServerErrorException('Uh-oh! We hit a snag searching on products!');
+      throw new InternalServerErrorException(
+        'Uh-oh! We hit a snag searching on products!',
+      );
     }
   }
 }
