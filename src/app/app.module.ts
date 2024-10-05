@@ -26,6 +26,7 @@ import { App } from './entities/app-info.entitie';
       entities: [User , Product , Basket , BasketProduct ,  Post , App],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([App]),
     UserModule,
     AuthModule,
     ProductModule,
