@@ -26,10 +26,10 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Product, (product) => product.owner)
+  @OneToMany(() => Product, (product) => product.owner , {onDelete:'CASCADE'})
   products: Product[];
 
-  @OneToMany(() => Post , post => post.author)
+  @OneToMany(() => Post , post => post.author , {onDelete:'CASCADE'})
   posts:Post[]
 
   @Column({

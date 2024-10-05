@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { Repository } from 'typeorm';
@@ -53,5 +53,20 @@ export class UserService {
 
   async findUserByProperties(props: any) {
     return await this.userRepository.findOne(props)
+  }
+
+  async deleteUser(id:number){
+    try {
+      const user = await this.userRepository.findOne({where:{id} , relations:['products' , 'posts']});
+      if(!user) throw new NotFoundException('User not found!');
+
+      await this.userRepository.remove(user);
+
+      return {message:'User deleted successfuly!' , user:{id}}
+    } catch (error) {
+      console.log(error)
+      if(!error.response) throw new InternalServerErrorException("Unfortunately, there was an issue deleting user!")
+        else throw error;
+    }
   }
 }

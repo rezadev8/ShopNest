@@ -14,23 +14,25 @@ export class Post {
   id: number;
 
   @Column()
-  title:string;
+  title: string;
 
   @Column()
-  content:string;
+  content: string;
 
   @Column()
-  thumbnail:string;
+  thumbnail: string;
 
   @Column()
-  keyword:string;
+  keyword: string;
 
-  @ManyToOne(() => User , user => user.posts)
-  author:User;
+  @ManyToOne(() => User, (user) => user.posts, {
+    onDelete: 'CASCADE',
+  })
+  author: User;
 
   @CreateDateColumn()
-  createdAt:string;
-  
+  createdAt: string;
+
   @UpdateDateColumn()
   updatedAt: number;
 }

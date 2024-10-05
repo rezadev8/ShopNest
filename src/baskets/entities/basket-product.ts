@@ -7,10 +7,14 @@ export class BasketProduct {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Basket, basket => basket.basketProducts)
+  @ManyToOne(() => Basket, (basket) => basket.basketProducts, {
+    onDelete: 'CASCADE',
+  })
   basket: Basket;
 
-  @ManyToOne(() => Product, product => product.basketProducts)
+  @ManyToOne(() => Product, (product) => product.basketProducts, {
+    onDelete: 'CASCADE',
+  })
   product: Product;
 
   @Column({ type: 'int', default: 1 })

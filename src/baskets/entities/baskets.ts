@@ -1,4 +1,3 @@
-import { Product } from 'src/products/entities/products.entity';
 import { User } from 'src/users/entities/users.entity';
 import {
   CreateDateColumn,
@@ -16,10 +15,14 @@ export class Basket {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => BasketProduct, basketProduct => basketProduct.basket)
+  @OneToMany(() => BasketProduct, (basketProduct) => basketProduct.basket, {
+    onDelete: 'CASCADE',
+  })
   basketProducts: BasketProduct[];
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   user: User;
 

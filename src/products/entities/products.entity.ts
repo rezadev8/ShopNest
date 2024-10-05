@@ -1,15 +1,11 @@
 import { BasketProduct } from 'src/baskets/entities/basket-product';
-import { Basket } from 'src/baskets/entities/baskets';
 import { User } from 'src/users/entities/users.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -31,10 +27,14 @@ export class Product {
   @Column({ unique: false })
   cover: string;
 
-  @ManyToOne(() => User, (user) => user.products)
+  @ManyToOne(() => User, (user) => user.products, {
+    onDelete: 'CASCADE',
+  })
   owner: User;
 
-  @OneToMany(() => BasketProduct, basketProduct => basketProduct.product)
+  @OneToMany(() => BasketProduct, (basketProduct) => basketProduct.product, {
+    onDelete: 'CASCADE',
+  })
   basketProducts: BasketProduct[];
 
   @CreateDateColumn()
