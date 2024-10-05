@@ -6,12 +6,12 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('users')
 export class UsersController {
-    constructor(private usersService:UserService){}
+  constructor(private usersService: UserService) {}
 
-    @Roles(Role.ADNIM)
-    @UseGuards(AuthGuard)
-    @Delete('/:id')
-    deleteUser(@Param(){id}){
-        return this.usersService.deleteUser(id)
-    }
+  @Roles(Role.ADNIM)
+  @UseGuards(AuthGuard)
+  @Delete('/:id')
+  deleteUser(@Param() { id }) {
+    return this.usersService.deleteUser(id);
+  }
 }

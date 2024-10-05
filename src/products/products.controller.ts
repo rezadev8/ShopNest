@@ -19,7 +19,6 @@ import { NewProductDto } from './dtos/new-product.dto';
 import { userInterface } from 'src/users/types/user';
 import { Request } from 'express';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { EditProductDto } from './dtos/edit-product.dto';
