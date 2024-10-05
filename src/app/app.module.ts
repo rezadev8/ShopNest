@@ -12,6 +12,7 @@ import { Basket } from '../baskets/entities/baskets';
 import { BasketProduct } from '../baskets/entities/basket-product';
 import { BlogModule } from '../blog/blog.module';
 import { Post } from '../blog/entities/posts';
+import { App } from './entities/app-info.entitie';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { Post } from '../blog/entities/posts';
       username: 'root',
       password: '',
       database: 'found_404',
-      entities: [User , Product , Basket , BasketProduct ,  Post],
+      entities: [User , Product , Basket , BasketProduct ,  Post , App],
       synchronize: true,
     }),
     UserModule,
