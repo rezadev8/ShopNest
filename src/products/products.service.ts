@@ -22,7 +22,13 @@ export class ProductService {
   ) {}
 
   findOne(id: number) {
-    return this.productRepository.findOne({ where: { id } });
+    return this.productRepository.findOne({
+      where: { id },
+    });
+  }
+
+  findOneByCustomQuery(props: any) {
+    return this.productRepository.findOne(props);
   }
 
   findAll() {
@@ -63,16 +69,36 @@ export class ProductService {
 
   async editProduct(id: number, editProductDto: EditProductDto) {
     try {
-      const product = await this.findOne(id);
-      if (!product) throw new NotFoundException('Product not found!');
+      const product = await this.findOneByCustomQuery({
+        where: { id },
+        relations: { basketProducts: true },
+      });
 
+      if (!product) throw new NotFoundException('Product not found!');
       await this.productRepository.save({ ...product, ...editProductDto });
 
-      return {message:'Product edited successfuly' , product:{id}}
+      return { message: 'Product edited successfuly', product: { id } };
     } catch (error) {
       if (!error.response)
         throw new InternalServerErrorException(
           'Uh-oh! We hit a snag editing your product!',
+        );
+      throw error;
+    }
+  }
+
+  async deleteProduct(id: number) {
+    try {
+      const product = await this.findOne(id);
+      if (!product) throw new NotFoundException('Product not found!');
+
+      await this.productRepository.remove(product);
+
+      return { message: 'Product deleted successfuly', product: { id } };
+    } catch (error) {
+      if (!error.response)
+        throw new InternalServerErrorException(
+          'Uh-oh! We hit a snag deleting your product!',
         );
       throw error;
     }

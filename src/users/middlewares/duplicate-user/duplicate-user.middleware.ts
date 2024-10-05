@@ -21,7 +21,7 @@ export class DuplicateUserMiddleware implements NestMiddleware {
       ],
     });
 
-    if (username === findUser.username)
+    if (findUser && username === findUser?.username)
       throw new HttpException('This username is already taken', 409);
 
     if (findUser) {

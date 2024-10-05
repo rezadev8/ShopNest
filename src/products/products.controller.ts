@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   NotFoundException,
@@ -55,6 +56,13 @@ export class ProductController {
   @Patch('product/:id')
   editProduct(@Param() { id }, @Body() editProductDto: EditProductDto) {
     return this.productService.editProduct(id, editProductDto);
+  }
+
+  @Roles(Role.ADNIM)
+  @UseGuards(AuthGuard)
+  @Delete('product/:id')
+  deleteProduct(@Param() { id }) {
+    return this.productService.deleteProduct(id);
   }
 
   @Get()
