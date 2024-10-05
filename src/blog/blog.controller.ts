@@ -7,6 +7,7 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  Patch,
 } from '@nestjs/common';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { BlogService } from './blog.service';
@@ -16,6 +17,7 @@ import { Role } from 'src/auth/enums/role.enum';
 
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { userInterface } from 'src/users/types/user';
+import { EditPostDto } from './dtos/edit-post.dto';
 
 @Controller('blog')
 export class BlogController {
@@ -23,7 +25,7 @@ export class BlogController {
 
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
-  @UsePipes(new ValidationPipe())
+  @UsePipes(new ValidationPipe({whitelist: true}))
   @Post('post')
   createPost(
     @Body() createPostDto: CreatePostDto,
@@ -32,8 +34,18 @@ export class BlogController {
     return this.blogService.handleCreatePost(createPostDto, currentUser);
   }
 
+  @Roles(Role.ADNIM)
+  @UseGuards(AuthGuard)
   @Delete('post/:id')
-  deletePost(@Param() {id}){
-    return this.blogService.deletePost(id)
+  deletePost(@Param() { id }) {
+    return this.blogService.deletePost(id);
+  }
+
+  @Roles(Role.ADNIM)
+  @UseGuards(AuthGuard)
+  @UsePipes(new ValidationPipe({whitelist: true}))
+  @Patch('post/:id')
+  editPost(@Param() { id }, @Body() editPostDto: EditPostDto) {
+    return this.blogService.editPost(editPostDto, id);
   }
 }

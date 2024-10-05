@@ -22,7 +22,7 @@ export class ProductController {
     }
 
     @Roles(Role.ADNIM)
-    @UsePipes(new ValidationPipe({transform:true}))
+    @UsePipes(new ValidationPipe({transform:true , whitelist: true}))
     @UseGuards(RolesGuard)
 	@UseGuards(AuthGuard)
     @Post('new')

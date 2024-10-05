@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { UserService } from 'src/users/users.service';
 import { userInterface } from 'src/users/types/user';
+import { EditPostDto } from './dtos/edit-post.dto';
 
 @Injectable()
 export class BlogService {
@@ -42,14 +43,31 @@ export class BlogService {
 
       if (!post) throw new NotFoundException('Post not found!');
       await this.postRepository.remove(post);
-      
-      return {message:'Post deleted successfuly!' , post:{id:postId}};
+
+      return { message: 'Post deleted successfuly!', post: { id: postId } };
     } catch (error) {
       if (!error?.response)
         throw new InternalServerErrorException(
           'Uh-oh! We hit a snag deleting post!',
         );
       throw error;
+    }
+  }
+
+  async editPost(editPostDto: EditPostDto, postId: number) {
+    try {
+      const post = await this.findOnePost(postId);
+      if (!post) throw new NotFoundException();
+
+      await this.postRepository.save({ ...post, ...editPostDto });
+
+      return { message: 'Post edited successfuly', post: { id: postId } };
+    } catch (error) {
+      if (!error?.response)
+        throw new InternalServerErrorException(
+          'Uh-oh! We hit a snag editing post!',
+        );
+      else throw error;
     }
   }
 }
