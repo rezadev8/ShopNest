@@ -20,28 +20,31 @@ export class User {
   @Column({ nullable: false })
   email: string;
 
+  @Column({ nullable: true })
+  username: string;
+
   @Column({ unique: true, type: 'varchar', length: 15, nullable: false })
   phone: number;
 
   @Column()
   password: string;
 
-  @OneToMany(() => Product, (product) => product.owner , {onDelete:'CASCADE'})
+  @OneToMany(() => Product, (product) => product.owner, { onDelete: 'CASCADE' })
   products: Product[];
 
-  @OneToMany(() => Post , post => post.author , {onDelete:'CASCADE'})
-  posts:Post[]
+  @OneToMany(() => Post, (post) => post.author, { onDelete: 'CASCADE' })
+  posts: Post[];
 
   @Column({
-    type:'enum',
-    enum:Role,
-    default:Role.USER
+    type: 'enum',
+    enum: Role,
+    default: Role.USER,
   })
-  role:Role
+  role: Role;
 
   @CreateDateColumn()
   createdAt: number;
-  
+
   @UpdateDateColumn()
   updatedAt: number;
 }

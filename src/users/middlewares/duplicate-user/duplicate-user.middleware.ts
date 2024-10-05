@@ -12,15 +12,22 @@ import { IsNull } from 'typeorm';
 export class DuplicateUserMiddleware implements NestMiddleware {
   constructor(private readonly usersService: UserService) {}
   async use(@Request() req, @Response() res, next: () => void) {
-    const {phone , email} = req.body;
+    const { phone, email, username } = req.body;
     const findUser = await this.usersService.findUserByProperties({
-      where: [{phone:phone ? phone : IsNull()} , {email:email ? email : IsNull()}],
+      where: [
+        { phone: phone ? phone : IsNull() },
+        { email: email ? email : IsNull() },
+        { username: username ? username : IsNull() },
+      ],
     });
 
+    if (username === findUser.username)
+      throw new HttpException('This username is already taken', 409);
+
     if (findUser) {
-      throw new HttpException("A user with these details already exists!", 409);
+      throw new HttpException('A user with these details already exists!', 409);
     } else {
-      next()
+      next();
     }
   }
 }

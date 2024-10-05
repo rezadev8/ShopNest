@@ -18,8 +18,11 @@ export class BlogService {
     private readonly userService: UserService,
   ) {}
 
-  findAll(){
-    return this.postRepository.find()
+  findAll() {
+    return this.postRepository.find({
+      relations: { author: true },
+      select: { author: { username: true } },
+    });
   }
 
   findOnePost(id: number) {
