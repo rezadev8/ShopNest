@@ -8,6 +8,7 @@ import {
   UsePipes,
   ValidationPipe,
   Patch,
+  Get,
 } from '@nestjs/common';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { BlogService } from './blog.service';
@@ -22,6 +23,11 @@ import { EditPostDto } from './dtos/edit-post.dto';
 @Controller('blog')
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
+
+  @Get('/')
+  getPost(){
+    return this.blogService.findAll()
+  }
 
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)

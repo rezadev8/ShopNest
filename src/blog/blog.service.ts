@@ -18,6 +18,10 @@ export class BlogService {
     private readonly userService: UserService,
   ) {}
 
+  findAll(){
+    return this.postRepository.find()
+  }
+
   findOnePost(id: number) {
     return this.postRepository.findOneBy({ id });
   }
