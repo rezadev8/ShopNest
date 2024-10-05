@@ -31,8 +31,11 @@ export class ProductService {
     return this.productRepository.findOne(props);
   }
 
-  findAll() {
-    return this.productRepository.find();
+  findAll(skip: number, take: number) {
+    return this.productRepository.find({
+      skip: Number(skip) || 0,
+      take: Number(take) || 30,
+    });
   }
 
   async createProduct(newProdct: NewProductDto, user: userInterface) {

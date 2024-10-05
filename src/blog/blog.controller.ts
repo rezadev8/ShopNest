@@ -9,6 +9,7 @@ import {
   ValidationPipe,
   Patch,
   Get,
+  Query,
 } from '@nestjs/common';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { BlogService } from './blog.service';
@@ -25,8 +26,9 @@ export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
   @Get('/')
-  getPost(){
-    return this.blogService.findAll()
+  getPost(@Query() query:{skip:number , take:number}){
+    const {skip , take} = query;
+    return this.blogService.findAll(skip , take)
   }
 
   @Roles(Role.ADNIM)

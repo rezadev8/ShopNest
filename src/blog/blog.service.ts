@@ -18,10 +18,12 @@ export class BlogService {
     private readonly userService: UserService,
   ) {}
 
-  findAll() {
-    return this.postRepository.find({
+  async findAll(skip: number, take: number) {
+    return await this.postRepository.find({
       relations: { author: true },
       select: { author: { username: true } },
+      skip: Number(skip) || 0,
+      take: Number(take) || 30,
     });
   }
 

@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
   UsePipes,
@@ -65,8 +66,9 @@ export class ProductController {
   }
 
   @Get()
-  getAll() {
-    return this.productService.findAll();
+  getAll(@Query() query:{skip:number , take:number}) {
+    const {skip , take} = query;
+    return this.productService.findAll(skip , take)
   }
 
   @HttpCode(200)
