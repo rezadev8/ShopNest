@@ -16,14 +16,14 @@ export class BasketsController {
 
   @UseGuards(AuthGuard)
   @Post('/add/:productId')
-  addProduct(@Req() req, @CurrentUser() user: userInterface) {
+  addProductToBasket(@Req() req, @CurrentUser() user: userInterface) {
     const product = req.product;
     return this.basketService.addProductToBasket(product, user);
   }
 
   @UseGuards(AuthGuard)
   @Delete('/delete/:productId')
-  deleteProduct(@Req() req, @CurrentUser() user: userInterface) {
+  deleteProductFromBasket(@Req() req, @CurrentUser() user: userInterface) {
     const product = req.product;
 
     return this.basketService.handleDeleteProduct(product , user.id);

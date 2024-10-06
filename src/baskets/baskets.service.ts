@@ -95,7 +95,7 @@ export class BasketService {
     };
   }
 
-  async deleteProductProductBasket(productBasket: BasketProduct) {
+  async deleteProductBasket(productBasket: BasketProduct) {
     try {
       return await this.basketProductRepository.delete(productBasket);
     } catch (error) {
@@ -121,7 +121,7 @@ export class BasketService {
         findBasketProduct.quantity--;
         await this.basketProductRepository.save(findBasketProduct);
       } else {
-        await this.deleteProductProductBasket(findBasketProduct);
+        await this.deleteProductBasket(findBasketProduct);
       }
 
       return {
