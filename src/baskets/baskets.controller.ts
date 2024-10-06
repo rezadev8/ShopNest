@@ -23,9 +23,9 @@ export class BasketsController {
 
   @UseGuards(AuthGuard)
   @Delete('/delete/:productId')
-  deleteProductFromBasket(@Req() req, @CurrentUser() user: userInterface) {
+  removeProductFromBasket(@Req() req, @CurrentUser() user: userInterface) {
     const product = req.product;
 
-    return this.basketService.handleDeleteProduct(product , user.id);
+    return this.basketService.handleRemoveProduct(product , user.id);
   }
 }

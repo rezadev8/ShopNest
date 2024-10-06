@@ -11,7 +11,7 @@ import { NewProductDto } from './dtos/new-product.dto';
 import { UserService } from 'src/users/users.service';
 import { userInterface } from 'src/users/types/user';
 import { SerializedUser } from 'src/users/types/serializedUser';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { EditProductDto } from './dtos/edit-product.dto';
 
 @Injectable()
@@ -31,11 +31,19 @@ export class ProductService {
     return this.productRepository.findOne(props);
   }
 
-  findAll(skip: number, take: number) {
-    return this.productRepository.find({
-      skip: Number(skip) || 0,
-      take: Number(take) || 30,
-    });
+  async findAll(skip: number, take: number) {
+    try {
+      const [entities, total] = await this.productRepository.findAndCount({
+        skip: Number(skip) || 0,
+        take: Number(take) || 30,
+      });
+
+      return { products: entities, total };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Unfortunately, there was an issue on getting products!',
+      );
+    }
   }
 
   async createProduct(newProdct: NewProductDto, user: userInterface) {
@@ -59,7 +67,7 @@ export class ProductService {
 
       return {
         ...saveProduct,
-        owner: plainToClass(SerializedUser, saveProduct.owner),
+        owner: plainToInstance(SerializedUser, saveProduct.owner),
       };
     } catch (error) {
       console.log(error);

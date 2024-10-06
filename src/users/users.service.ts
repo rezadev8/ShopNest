@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { Repository } from 'typeorm';
 import { encodePassword } from 'src/utils/bcrypt';
-import { plainToClass } from 'class-transformer';
+import {  plainToInstance } from 'class-transformer';
 import { CreateUserDto } from 'src/auth/dtos/create-user.dto';
 import { SerializedUser } from './types/serializedUser';
 
@@ -29,13 +29,13 @@ export class UserService {
       const saveUser = await this.userRepository.save(newUser);
 
       return {
-        user: plainToClass(SerializedUser, saveUser),
+        user: plainToInstance(SerializedUser, saveUser),
         msg: 'User create successfuly ;)',
       };
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(
-        'Unfortunately, there was an issue creating your account!',
+        'Unfortunately, there was an issue on creating your account!',
       );
     }
   }
@@ -76,9 +76,24 @@ export class UserService {
       console.log(error);
       if (!error.response)
         throw new InternalServerErrorException(
-          'Unfortunately, there was an issue deleting user!',
+          'Unfortunately, there was an issue on deleting user!',
         );
       else throw error;
+    }
+  }
+
+  async getUsers({ skip, take }: { skip?: number; take?: number }) {
+    try {
+      const [entities , total] = await this.userRepository.findAndCount({
+        skip: Number(skip) || 0,
+        take: Number(take) || 30,
+      });
+
+      return {users:plainToInstance(SerializedUser,entities) , total}
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Unfortunately, there was an issue on getting users!',
+      );
     }
   }
 }

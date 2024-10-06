@@ -105,7 +105,7 @@ export class BasketService {
     }
   }
 
-  async handleDeleteProduct(product: Product, userId: number) {
+  async handleRemoveProduct(product: Product, userId: number) {
     try {
       const findBasketProduct = await this.basketProductRepository.findOne({
         where: {

@@ -20,12 +20,20 @@ export class BlogService {
   ) {}
 
   async findAll(skip: number, take: number) {
-    return await this.postRepository.find({
-      relations: { author: true },
-      select: { author: { username: true } },
-      skip: Number(skip) || 0,
-      take: Number(take) || 30,
-    });
+    try {
+      const [entities, total] = await this.postRepository.findAndCount({
+        relations: { author: true },
+        select: { author: { username: true } },
+        skip: Number(skip) || 0,
+        take: Number(take) || 30,
+      });
+
+      return { posts: entities, total };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Unfortunately, there was an issue on getting posts!',
+      );
+    }
   }
 
   findOnePost(id: number) {
