@@ -98,4 +98,23 @@ export class TicketsService {
       throw error;
     }
   }
+
+  async deleteTicket(chatId: string) {
+    try {
+      const tickets = await this.ticketRepository.find({ where: { chatId } });
+
+      if (tickets.length < 1) throw new NotFoundException('Ticket not found!');
+
+      await this.ticketRepository.remove(tickets);
+
+      return { message: 'Ticket deleted succssfuly', ticket: { chatId } };
+    } catch (error) {
+      console.log(error);
+      if (!error.response)
+        throw new InternalServerErrorException(
+          'Uh-oh! We hit a snag on deleting ticket!',
+        );
+      throw error;
+    }
+  }
 }
