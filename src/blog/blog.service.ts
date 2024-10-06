@@ -5,11 +5,12 @@ import {
 } from '@nestjs/common';
 import { Post } from './entities/posts';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { UserService } from 'src/users/users.service';
 import { userInterface } from 'src/users/types/user';
 import { EditPostDto } from './dtos/edit-post.dto';
+import { SearchBlogDto } from './dtos/search-post.dto';
 
 @Injectable()
 export class BlogService {
@@ -57,7 +58,7 @@ export class BlogService {
     } catch (error) {
       if (!error?.response)
         throw new InternalServerErrorException(
-          'Uh-oh! We hit a snag deleting post!',
+          'Uh-oh! We hit a snag on deleting post!',
         );
       throw error;
     }
@@ -74,9 +75,28 @@ export class BlogService {
     } catch (error) {
       if (!error?.response)
         throw new InternalServerErrorException(
-          'Uh-oh! We hit a snag editing post!',
+          'Uh-oh! We hit a snag on editing post!',
         );
       else throw error;
+    }
+  }
+
+  async searchInBlog(searchBlogDto: SearchBlogDto) {
+    const { keyword = '', title = '' } = searchBlogDto;
+
+    try {
+      const posts = await this.postRepository.find({
+        where: [
+          { keyword: keyword ? Like(`%${keyword}%`) : null },
+          { title: title ? Like(`%${title}%`) : null },
+        ],
+      });
+
+      return posts;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Uh-oh! We hit a snag on searching post!',
+      );
     }
   }
 }
