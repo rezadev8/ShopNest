@@ -7,6 +7,7 @@ import {
   Column,
   ManyToOne,
 } from 'typeorm';
+import { Status } from '../enums/status.enum';
 
 @Entity('tickets')
 export class Ticket {
@@ -24,6 +25,9 @@ export class Ticket {
 
   @Column()
   chatId: string;
+
+  @Column({ nullable: true, default: Status.OPEN, type: 'enum', enum: Status })
+  status: Status;
 
   @CreateDateColumn()
   createdAt: string;

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -29,5 +30,11 @@ export class TicketsController {
   @Post('/send-message')
   sendMessage(@Req() req, @Body() sendMessageDto: SendMessagetDto) {
     return this.ticketsService.sendMessage(req.user?.id, sendMessageDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/messages/:chatId')
+  getTicketMessages(@Param() { chatId }) {
+    return this.ticketsService.getTicketMessages(chatId);
   }
 }

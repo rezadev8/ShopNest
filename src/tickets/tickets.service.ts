@@ -19,7 +19,12 @@ export class TicketsService {
 
   async findChat(chatId: string) {
     try {
-      const chat = this.ticketRepository.find({ where: { chatId } });
+      const chat = this.ticketRepository.find({
+        where: { chatId },
+        relations: { user: true },
+        select: { user: { role: true } },
+      });
+
       return chat;
     } catch (error) {
       throw new InternalServerErrorException(
@@ -32,8 +37,6 @@ export class TicketsService {
     try {
       const tickets = await this.ticketRepository.find({
         where: { user: { id: userId }, title: Not(IsNull()) },
-        relations: { user: true },
-        select: { user: { role: true } },
       });
 
       return tickets;
@@ -52,7 +55,8 @@ export class TicketsService {
       if (chatId) {
         const findChat = await this.findChat(chatId);
 
-        if (findChat.length < 1) throw new NotFoundException('Chat not found!');
+        if (findChat.length < 1)
+          throw new NotFoundException('Ticket not found!');
       } else chatId = uuidv4();
 
       await this.ticketRepository.save({
@@ -65,11 +69,31 @@ export class TicketsService {
             : null,
       });
 
-      return { message: 'Message sended successfuly!', ticket: { chatId , user:{role:user.role} } };
+      return {
+        message: 'Message sended successfuly!',
+        ticket: { chatId, user: { role: user.role } },
+      };
     } catch (error) {
       if (!error.response)
         throw new InternalServerErrorException(
           'Uh-oh! We hit a snag on sending your message!',
+        );
+      throw error;
+    }
+  }
+
+  async getTicketMessages(chatId: string) {
+    try {
+      const getChatMessages = await this.findChat(chatId);
+
+      if (getChatMessages.length < 1)
+        throw new NotFoundException('Ticket not found!');
+
+      return getChatMessages;
+    } catch (error) {
+      if (!error.response)
+        throw new InternalServerErrorException(
+          'Uh-oh! We hit a snag on getting your messages!',
         );
       throw error;
     }
