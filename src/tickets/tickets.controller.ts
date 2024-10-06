@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -13,38 +14,50 @@ import {
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { userInterface } from 'src/users/types/user';
-import { TicketsService } from './tickets.service';
+import { TicketService } from './tickets.service';
 import { SendMessagetDto } from './dtos/send-message.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
+import { UpdateStatusDto } from './dtos/update-status.dto';
 
 @Controller('tickets')
 export class TicketsController {
-  constructor(private readonly ticketsService: TicketsService) {}
+  constructor(private readonly ticketService: TicketService) {}
 
   @UseGuards(AuthGuard)
   @Get('')
   getUserTickets(@CurrentUser() user: userInterface) {
-    return this.ticketsService.getUserTickets(user.id);
+    return this.ticketService.getUserTickets(user.id);
   }
 
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('/send-message')
   sendMessage(@Req() req, @Body() sendMessageDto: SendMessagetDto) {
-    return this.ticketsService.sendMessage(req.user?.id, sendMessageDto);
+    return this.ticketService.sendMessage(req.user?.id, sendMessageDto);
   }
 
   @UseGuards(AuthGuard)
-  @Get('/messages/:chatId')
-  getTicketMessages(@Param() { chatId }) {
-    return this.ticketsService.getTicketMessages(chatId);
+  @Get('/:id/messages')
+  getTicketMessages(@Param() { id }) {
+    return this.ticketService.getTicketMessages(id);
   }
 
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
-  @Delete('ticket/:chatId')
-  deleteTicket(@Param() { chatId }) {
-    return this.ticketsService.deleteTicket(chatId);
+  @Delete(':id/ticket')
+  deleteTicket(@Param() { id }) {
+    return this.ticketService.deleteTicket(id);
+  }
+
+  @Roles(Role.ADNIM)
+  @UseGuards(AuthGuard)
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  @Patch('/:id/status')
+  async updateTicketStatus(
+    @Param('id') id: string,
+    @Body() statusDto: UpdateStatusDto,
+  ) {
+    this.ticketService.updateStatus(id, statusDto.status);
   }
 }

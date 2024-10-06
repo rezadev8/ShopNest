@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -9,9 +10,10 @@ import { IsNull, Not, Repository } from 'typeorm';
 import { SendMessagetDto } from './dtos/send-message.dto';
 import { UserService } from 'src/users/users.service';
 import { v1 as uuidv4 } from 'uuid';
+import { Status } from './enums/status.enum';
 
 @Injectable()
-export class TicketsService {
+export class TicketService {
   constructor(
     @InjectRepository(Ticket) private ticketRepository: Repository<Ticket>,
     private readonly usersService: UserService,
@@ -51,6 +53,8 @@ export class TicketsService {
     try {
       const user = await this.usersService.findOne(userId);
       let chatId = sendMessageDto.chatId;
+      if (!chatId && !sendMessageDto.title)
+        throw new BadRequestException('Title is required');
 
       if (chatId) {
         const findChat = await this.findChat(chatId);
@@ -59,14 +63,17 @@ export class TicketsService {
           throw new NotFoundException('Ticket not found!');
       } else chatId = uuidv4();
 
+      const isParentMessage = sendMessageDto.title && !sendMessageDto.chatId;
+
       await this.ticketRepository.save({
         user,
         chatId,
         text: sendMessageDto.message,
         title:
-          sendMessageDto.title && !sendMessageDto.chatId
+        isParentMessage
             ? sendMessageDto.title
             : null,
+        status: isParentMessage ? Status.OPEN : null,
       });
 
       return {
@@ -115,6 +122,28 @@ export class TicketsService {
           'Uh-oh! We hit a snag on deleting ticket!',
         );
       throw error;
+    }
+  }
+
+  async updateStatus(chatId: string, status: Status) {
+    try {
+      const ticket = await this.ticketRepository.findOne({
+        where: { chatId, title: Not(IsNull()) },
+      });
+
+      if (!ticket) throw new NotFoundException('Ticket not found!');
+      ticket.status = status;
+      await this.ticketRepository.save(ticket);
+
+      return {
+        message: 'Ticket status changed successfuly',
+        ticket: { id: ticket.id, status },
+      };
+    } catch (error) {
+      if (!error.response)
+        throw new InternalServerErrorException(
+          'Uh-oh! We hit a snag on changing ticket status!',
+        );
     }
   }
 }

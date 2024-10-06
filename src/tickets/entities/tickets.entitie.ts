@@ -26,8 +26,8 @@ export class Ticket {
   @Column()
   chatId: string;
 
-  @Column({ nullable: true, default: Status.OPEN, type: 'enum', enum: Status })
-  status: Status;
+  @Column({ nullable: true, default: null, type: 'enum', enum: Status })
+  status: Status | null;
 
   @CreateDateColumn()
   createdAt: string;
