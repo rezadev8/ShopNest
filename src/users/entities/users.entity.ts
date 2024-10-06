@@ -1,12 +1,11 @@
 import { Role } from 'src/auth/enums/role.enum';
-import { Basket } from 'src/baskets/entities/baskets';
 import { Post } from 'src/blog/entities/posts';
 import { Product } from 'src/products/entities/products.entity';
+import { Ticket } from 'src/tickets/entities/tickets.entitie';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -41,6 +40,9 @@ export class User {
     default: Role.USER,
   })
   role: Role;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.user, { onDelete: 'CASCADE' })
+  tickets: Ticket[];
 
   @CreateDateColumn()
   createdAt: number;

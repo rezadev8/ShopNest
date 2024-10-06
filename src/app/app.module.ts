@@ -13,6 +13,7 @@ import { BasketProduct } from '../baskets/entities/basket-product';
 import { BlogModule } from '../blog/blog.module';
 import { Post } from '../blog/entities/posts';
 import { App } from './entities/app-info.entitie';
+import { Ticket } from 'src/tickets/entities/tickets.entitie';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { App } from './entities/app-info.entitie';
       username: 'root',
       password: '',
       database: 'found_404',
-      entities: [User , Product , Basket , BasketProduct ,  Post , App],
+      entities: [User , Product , Basket , BasketProduct ,  Post , App , Ticket],
       synchronize: true,
     }),
     TypeOrmModule.forFeature([App]),
