@@ -19,7 +19,9 @@ import { SendMessagetDto } from './dtos/send-message.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { UpdateStatusDto } from './dtos/update-status.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Tickets')
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketService: TicketService) {}

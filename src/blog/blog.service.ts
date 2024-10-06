@@ -23,7 +23,7 @@ export class BlogService {
     try {
       const [entities, total] = await this.postRepository.findAndCount({
         relations: { author: true },
-        select: { author: { username: true } },
+        select: { author: { name: true } },
         skip: Number(skip) || 0,
         take: Number(take) || 30,
       });

@@ -3,7 +3,9 @@ import { BasketService } from './baskets.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { userInterface } from 'src/users/types/user';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Baskets')
 @Controller('baskets')
 export class BasketsController {
   constructor(private basketService: BasketService) {}

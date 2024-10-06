@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Role } from 'src/auth/enums/role.enum';
 import { Post } from 'src/blog/entities/posts';
 import { Product } from 'src/products/entities/products.entity';
@@ -13,15 +14,25 @@ import {
 
 @Entity('users')
 export class User {
+  @ApiProperty({ description: 'User id', example: 1 })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({
+    example: 'rezabahmani.dev@gmail.com',
+  })
   @Column({ nullable: false })
   email: string;
 
+  @ApiProperty({
+    example: 'Reza',
+  })
   @Column({ nullable: true })
-  username: string;
+  name: string;
 
+  @ApiProperty({
+    example: '09123456789',
+  })
   @Column({ unique: true, type: 'varchar', length: 15, nullable: false })
   phone: number;
 
@@ -44,9 +55,11 @@ export class User {
   @OneToMany(() => Ticket, (ticket) => ticket.user, { onDelete: 'CASCADE' })
   tickets: Ticket[];
 
+  @ApiProperty({ example: '2024-10-06T16:40:07.703Z' })
   @CreateDateColumn()
   createdAt: number;
 
+  @ApiProperty({ example: '2024-10-06T16:40:07.703Z' })
   @UpdateDateColumn()
   updatedAt: number;
 }

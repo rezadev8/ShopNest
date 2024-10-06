@@ -10,20 +10,27 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/sign-in.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { ApiCreatedResponse, ApiTags, ApiResponse } from '@nestjs/swagger';
+import { User } from 'src/users/entities/users.entity';
+import { SignInSwagger, SignUpSwagger } from './decorators/auth.swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @SignUpSwagger()
   @HttpCode(HttpStatus.CREATED)
-  @Post('signup')
   @UsePipes(new ValidationPipe({ transform: true }))
+  @Post('signup')
   signUp(@Body() userDto: CreateUserDto) {
     return this.authService.signUp(userDto);
   }
 
-  @Post('login')
+
+  @SignInSwagger()
   @UsePipes(new ValidationPipe({ transform: true }))
+  @Post('login')
   async signIn(@Body() signInDto: LoginDto) {
     const result = await this.authService.signIn(
       signInDto.username,

@@ -22,7 +22,9 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { userInterface } from 'src/users/types/user';
 import { EditPostDto } from './dtos/edit-post.dto';
 import { SearchBlogDto } from './dtos/search-post.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Blog')
 @Controller('blog')
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}

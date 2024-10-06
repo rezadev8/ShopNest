@@ -1,15 +1,20 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 
-export class NewProductDto{
-    @IsNotEmpty()
-    name:string;
+export class NewProductDto {
+  @ApiProperty({ example: 'Keyboard' })
+  @IsNotEmpty()
+  name: string;
 
-    @IsNotEmpty()
-    price:number;
+  @ApiProperty({ example: 32 })
+  @IsNotEmpty()
+  price: number;
 
-    @IsNotEmpty()
-    description:string;
+  @ApiProperty({ example: 'This keyboard was made by Super Man and it emits lasers from its buttons' })
+  @IsNotEmpty()
+  description: string;
 
-    @IsNotEmpty()
-    cover:string;
+  @ApiProperty({ example: '/keyboard.png' })
+  @IsNotEmpty()
+  cover: string;
 }

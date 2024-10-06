@@ -3,7 +3,9 @@ import { UserService } from './users.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { Role } from 'src/auth/enums/role.enum';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UserService) {}

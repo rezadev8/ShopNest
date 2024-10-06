@@ -23,10 +23,16 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { EditProductDto } from './dtos/edit-product.dto';
+import { ApiResponse, ApiTags , } from '@nestjs/swagger';
+import { Product } from './entities/products.entity';
+import { GetProductSwagger } from './decorators/products.swagger';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
+
+  @GetProductSwagger()
   @Get('product/:id')
   async getProduct(@Param() { id }: { id: number }) {
     const product = await this.productService.findOne(id);

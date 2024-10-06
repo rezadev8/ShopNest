@@ -28,10 +28,8 @@ export class UserService {
       newUser.password = await encodePassword(newUser.password);
       const saveUser = await this.userRepository.save(newUser);
 
-      return {
-        user: plainToInstance(SerializedUser, saveUser),
-        msg: 'User create successfuly ;)',
-      };
+      return plainToInstance(SerializedUser, saveUser)
+      
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(

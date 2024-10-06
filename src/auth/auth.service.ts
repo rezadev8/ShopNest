@@ -25,7 +25,7 @@ export class AuthService {
   async signIn(
     username: string,
     pass: string,
-  ): Promise<{ access_token: string; msg: string }> {
+  ): Promise<{ access_token: string; message: string }> {
     const user = await this.usersService.findOneByUserName(username);
     if (!user)
       throw new NotFoundException("Strange! Couldn't find a user with those details :(");
@@ -39,7 +39,7 @@ export class AuthService {
 
     return {
       access_token: await this.jwtService.signAsync(payload),
-      msg: "Here you go, your token!",
+      message: "Here you go, your token!",
     };
   }
 }
