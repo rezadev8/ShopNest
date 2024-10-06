@@ -25,9 +25,6 @@ export class Ticket {
   @Column()
   chatId: string;
 
-  @Column({ nullable: true })
-  status: string;
-
   @CreateDateColumn()
   createdAt: string;
 

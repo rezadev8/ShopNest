@@ -14,6 +14,7 @@ import { BlogModule } from '../blog/blog.module';
 import { Post } from '../blog/entities/posts';
 import { App } from './entities/app-info.entitie';
 import { Ticket } from 'src/tickets/entities/tickets.entitie';
+import { TicketsModule } from 'src/tickets/tickets.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { Ticket } from 'src/tickets/entities/tickets.entitie';
     ProductModule,
     BasketsModule,
     BlogModule,
+    TicketsModule
   ],
   controllers: [AppController],
   providers: [AppService],
