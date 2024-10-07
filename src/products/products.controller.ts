@@ -23,9 +23,17 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { EditProductDto } from './dtos/edit-product.dto';
-import { ApiResponse, ApiTags , } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Product } from './entities/products.entity';
-import { GetProductSwagger } from './decorators/products.swagger';
+import {
+  CreateProductSwagger,
+  DeleteProductSwagger,
+  EditProductSwagger,
+  GetAllProductsSwagger,
+  GetProductSwagger,
+  SearchOnProductsSwagger,
+} from './decorators/products.swagger';
+import { SearchProductDto } from './dtos/search-product.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -45,6 +53,7 @@ export class ProductController {
     return product;
   }
 
+  @CreateProductSwagger()
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
@@ -56,6 +65,7 @@ export class ProductController {
     return this.productService.createProduct(newProductDto, currentUser);
   }
 
+  @EditProductSwagger()
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
@@ -64,6 +74,7 @@ export class ProductController {
     return this.productService.editProduct(id, editProductDto);
   }
 
+  @DeleteProductSwagger()
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
   @Delete('product/:id')
@@ -71,17 +82,18 @@ export class ProductController {
     return this.productService.deleteProduct(id);
   }
 
+  @GetAllProductsSwagger()
   @Get()
-  getAll(@Query() query:{skip:number , take:number}) {
-    const {skip , take} = query;
-    return this.productService.findAll(skip , take)
+  getAll(@Query() query: { skip: number; take: number }) {
+    const { skip, take } = query;
+    return this.productService.findAll(skip, take);
   }
 
+  @SearchOnProductsSwagger()
   @HttpCode(200)
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('search')
-  searchProduct(@Req() req: Request) {
-    const { productName } = req.body;
-
-    return this.productService.searchProduct(productName);
+  searchProduct(@Body() searchProductDto: SearchProductDto) {
+    return this.productService.searchProduct(searchProductDto.productName);
   }
 }

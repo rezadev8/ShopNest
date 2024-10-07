@@ -1,19 +1,24 @@
-import { IsNotEmpty, IsOptional } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
-export class EditProductDto{
-    @IsOptional()
-    @IsNotEmpty()
-    name:string;
+export class EditProductDto {
+  @ApiProperty({ example: 'Mouse', required:false })
+  @IsOptional()
+  @IsNotEmpty()
+  name: string;
 
-    @IsOptional()
-    @IsNotEmpty()
-    price:number;
+  @ApiProperty({ example: 22, required:false })
+  @IsOptional()
+  @IsNotEmpty()
+  price: number;
 
-    @IsOptional()
-    @IsNotEmpty()
-    description:string;
+  @ApiProperty({ example: 'This mouse is made by my spider and it spins itself' , required:false })
+  @IsOptional()
+  @IsNotEmpty()
+  description: string;
 
-    @IsOptional()
-    @IsNotEmpty()
-    cover:string;
+  @ApiProperty({ example: '/mouse.png', required:false })
+  @IsOptional()
+  @IsNotEmpty()
+  cover: string;
 }

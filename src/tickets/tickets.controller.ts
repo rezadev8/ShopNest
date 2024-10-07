@@ -20,46 +20,48 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { UpdateStatusDto } from './dtos/update-status.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { DeleteTicketSwagger, GetTicketMessages, GetUserTicketsSwagger, SendMessageSwagger, UpdateTicketStatusSwagger } from './decorators/tickets.swagger.decorator';
 
 @ApiTags('Tickets')
+@UseGuards(AuthGuard)
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketService: TicketService) {}
 
-  @UseGuards(AuthGuard)
+  @GetUserTicketsSwagger()
   @Get('')
   getUserTickets(@CurrentUser() user: userInterface) {
     return this.ticketService.getUserTickets(user.id);
   }
 
-  @UseGuards(AuthGuard)
+  @SendMessageSwagger()
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('/send-message')
   sendMessage(@Req() req, @Body() sendMessageDto: SendMessagetDto) {
     return this.ticketService.sendMessage(req.user?.id, sendMessageDto);
   }
 
-  @UseGuards(AuthGuard)
+  @GetTicketMessages()
   @Get('/:id/messages')
-  getTicketMessages(@Param() { id }) {
-    return this.ticketService.getTicketMessages(id);
+  getTicketMessages(@Req() req , @Param() { id }) {
+    return this.ticketService.getTicketMessages(id , req.user?.id);
   }
 
+  @DeleteTicketSwagger()
   @Roles(Role.ADNIM)
-  @UseGuards(AuthGuard)
   @Delete(':id/ticket')
   deleteTicket(@Param() { id }) {
     return this.ticketService.deleteTicket(id);
   }
 
+  @UpdateTicketStatusSwagger()
   @Roles(Role.ADNIM)
-  @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Patch('/:id/status')
   async updateTicketStatus(
     @Param('id') id: string,
     @Body() statusDto: UpdateStatusDto,
   ) {
-    this.ticketService.updateStatus(id, statusDto.status);
+    return this.ticketService.updateStatus(id, statusDto.status);
   }
 }

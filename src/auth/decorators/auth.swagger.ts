@@ -1,5 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
+import { userExample } from 'src/common/data/api.swagger';
 import { User } from 'src/users/entities/users.entity';
 
 export const SignUpSwagger = () => {
@@ -7,14 +8,7 @@ export const SignUpSwagger = () => {
     ApiResponse({
       type: User,
       status: 201,
-      example: {
-        email: 'rezabahmasni.dev@gmail.com',
-        phone: 9123456789,
-        name: 'Reza',
-        id: 1,
-        createdAt: '2024-10-06T20:35:37.623Z',
-        updatedAt: '2024-10-06T20:35:37.623Z',
-      },
+      example: userExample,
     }),
     ApiResponse({
       description: 'Repeat user',

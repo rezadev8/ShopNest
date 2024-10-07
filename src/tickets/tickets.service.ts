@@ -19,10 +19,10 @@ export class TicketService {
     private readonly usersService: UserService,
   ) {}
 
-  async findChat(chatId: string) {
+  async findChat(chatId: string , userId?:number) {
     try {
       const chat = this.ticketRepository.find({
-        where: { chatId },
+        where: { chatId , user:{id:userId} },
         relations: { user: true },
         select: { user: { role: true } },
       });
@@ -89,9 +89,9 @@ export class TicketService {
     }
   }
 
-  async getTicketMessages(chatId: string) {
+  async getTicketMessages(chatId: string , userId:number) {
     try {
-      const getChatMessages = await this.findChat(chatId);
+      const getChatMessages = await this.findChat(chatId , userId);
 
       if (getChatMessages.length < 1)
         throw new NotFoundException('Ticket not found!');
@@ -144,6 +144,7 @@ export class TicketService {
         throw new InternalServerErrorException(
           'Uh-oh! We hit a snag on changing ticket status!',
         );
+        throw error
     }
   }
 }

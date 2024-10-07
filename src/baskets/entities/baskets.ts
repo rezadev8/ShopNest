@@ -9,9 +9,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { BasketProduct } from './basket-product';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('baskets')
 export class Basket {
+  @ApiProperty({ description: 'Basket id', example: 1 })
   @PrimaryGeneratedColumn()
   id: number;
 

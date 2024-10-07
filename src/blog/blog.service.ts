@@ -11,6 +11,8 @@ import { UserService } from 'src/users/users.service';
 import { userInterface } from 'src/users/types/user';
 import { EditPostDto } from './dtos/edit-post.dto';
 import { SearchBlogDto } from './dtos/search-post.dto';
+import { plainToInstance } from 'class-transformer';
+import { SerializedUser } from 'src/users/types/serializedUser';
 
 @Injectable()
 export class BlogService {
@@ -47,10 +49,15 @@ export class BlogService {
     try {
       const user = await this.userService.findOne(currentUser.id);
 
-      return await this.postRepository.save({ ...createPostDto, author: user });
+      const savePost = await this.postRepository.save({
+        ...createPostDto,
+        author: user,
+      });
+
+      return { ...savePost, author: plainToInstance(SerializedUser, user) };
     } catch (error) {
       throw new InternalServerErrorException(
-        'Unfortunately, there was an issue creating your post!',
+        'Unfortunately, there was an issue on creating your post!',
       );
     }
   }
@@ -75,7 +82,7 @@ export class BlogService {
   async editPost(editPostDto: EditPostDto, postId: number) {
     try {
       const post = await this.findOnePost(postId);
-      if (!post) throw new NotFoundException();
+      if (!post) throw new NotFoundException('Post not found!');
 
       await this.postRepository.save({ ...post, ...editPostDto });
 
