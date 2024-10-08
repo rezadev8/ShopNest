@@ -61,37 +61,21 @@ To run ShopNest locally, follow these steps:
 
 ## API Routes
 
-### App
-- `GET /` : Returns basic information about the application.
+اگر پروژه رو با **Swagger** تعریف کردی و API ها به طور کامل مستندسازی شدن، نیازی نیست تمام جزئیات API رو مجدد در داکیومنت اصلی توضیح بدی. می‌تونی به صورت کلی به Swagger اشاره کنی و لینک دسترسی به داکیومنت Swagger رو قرار بدی. این باعث می‌شه داکیومنت اصلی سبک‌تر و قابل‌فهم‌تر بشه و تمرکز اصلی روی نکات کلی و نحوه راه‌اندازی پروژه باشه.
 
-### Auth
-- `POST /auth/login` : Authenticate users and provide a JWT token.
-- `POST /auth/register` : Register a new user.
+برای مثال، به جای ذکر دقیق API ها، می‌تونی بخشی به این شکل در داکیومنت اضافه کنی:
 
-### Baskets
-- `GET /baskets` : Retrieve the current user's shopping basket.
-- `POST /baskets/add` : Add an item to the basket.
-- `DELETE /baskets/remove` : Remove an item from the basket.
+---
 
-### Blog
-- `GET /blog` : Get a list of blog posts.
-- `POST /blog/create` : Admins can create a new blog post.
+## API Documentation
 
-### Products
-- `GET /products` : Retrieve a list of products.
-- `POST /products/create` : Admins can add a new product.
-- `PUT /products/update/:id` : Admins can update a product.
-- `DELETE /products/delete/:id` : Admins can delete a product.
+All API routes and their specifications are documented using **Swagger**. You can access the full API documentation by running the application and navigating to:
 
-### Tickets
-- `POST /tickets/create` : Users can create a new ticket.
-- `GET /tickets` : Admins can view all tickets.
-- `PUT /tickets/update/:id` : Admins can update the status of a ticket.
-- `DELETE /tickets/delete/:id` : Admins can delete a ticket.
+```
+http://localhost:2000/api
+```
 
-### Users
-- `GET /users` : Retrieve all users (admin only).
-- `DELETE /users/delete/:id` : Admins can delete a user.
+This Swagger documentation provides a complete reference to all available routes, request parameters, and response formats for the **ShopNest** project.
 
 ---
 
