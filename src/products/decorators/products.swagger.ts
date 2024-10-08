@@ -1,9 +1,13 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiParam, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiParam,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { Product } from '../entities/products.entity';
 import {
   InternalServerErrorSwagger,
   PaginationQuerySwagger,
+  UnauthorizedSwagger,
 } from 'src/common/decorators/global.swagger.decorator';
 import { productExample, userExample } from 'src/common/data/api.swagger';
 
@@ -35,6 +39,7 @@ export const GetProductSwagger = () => {
 
 export const CreateProductSwagger = () => {
   return applyDecorators(
+    UnauthorizedSwagger(),
     ApiResponse({
       example: {
         ...productExample,
@@ -52,6 +57,7 @@ export const CreateProductSwagger = () => {
 
 export const EditProductSwagger = () => {
   return applyDecorators(
+    UnauthorizedSwagger(),
     ApiParam({
       name: 'id',
       required: true,
@@ -84,6 +90,7 @@ export const EditProductSwagger = () => {
 
 export const DeleteProductSwagger = () => {
   return applyDecorators(
+    UnauthorizedSwagger(),
     ApiParam({
       name: 'id',
       required: true,

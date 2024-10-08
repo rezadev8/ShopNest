@@ -1,7 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
 import {
-  ApiBearerAuth,
-  ApiNotFoundResponse,
   ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
@@ -10,6 +8,7 @@ import {
   InternalServerErrorSwagger,
   NotFoundErrorSwagger,
   PaginationQuerySwagger,
+  UnauthorizedSwagger,
 } from 'src/common/decorators/global.swagger.decorator';
 
 const NotFoundPostSwagger = () => NotFoundErrorSwagger('Post not found!');
@@ -43,7 +42,7 @@ export const GetPostsSwagger = () => {
 
 export const CreatePostSwagger = () => {
   return applyDecorators(
-    ApiBearerAuth(),
+    UnauthorizedSwagger(),
     ApiResponse({
       status: 201,
       example: { ...postExample, author: userExample },
@@ -57,7 +56,7 @@ export const CreatePostSwagger = () => {
 
 export const DeletePostSwagger = () => {
   return applyDecorators(
-    ApiBearerAuth(),
+    UnauthorizedSwagger(),
     NotFoundPostSwagger(),
     PostIdParamSwagger(),
     ApiResponse({
@@ -79,7 +78,7 @@ export const DeletePostSwagger = () => {
 
 export const EditPostSwagger = () => {
   return applyDecorators(
-    ApiBearerAuth(),
+    UnauthorizedSwagger(),
     PostIdParamSwagger(),
     NotFoundPostSwagger(),
     ApiResponse({

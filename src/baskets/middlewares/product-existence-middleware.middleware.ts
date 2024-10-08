@@ -6,7 +6,7 @@ export class ProductExistenceMiddlewareMiddleware implements NestMiddleware {
   constructor(private readonly productService: ProductService) {}
 
   async use(@Request() req, @Response() res, next: () => void) {
-    const productId = req.params?.productId;
+    const productId = req.params?.productId.trim();
     if(!productId) throw new HttpException('Really? You expect me to find the product without an ID?' , 422);
 
     const product = await this.productService.findOne(productId);

@@ -16,6 +16,16 @@ const ProductIdParamSwagger = () =>
     description: 'Product ID',
   });
 
+const ProductIdIsMandatorySwagger = () =>
+  ApiResponse({
+    status: 422,
+    example: {
+      statusCode: 422,
+      message: 'Really? You expect me to find the product without an ID?',
+    },
+    description: 'Product ID is mandatory',
+  });
+
 export const GetUserBasketSwagger = () => {
   return applyDecorators(
     ApiResponse({
@@ -40,6 +50,7 @@ export const GetUserBasketSwagger = () => {
 
 export const AddProductToBasketSwagger = () => {
   return applyDecorators(
+    ProductIdIsMandatorySwagger(),
     ProductNotFoundSwagger(),
     ProductIdParamSwagger(),
     ApiResponse({
@@ -57,16 +68,9 @@ export const AddProductToBasketSwagger = () => {
 
 export const RemoveProductFromBasket = () => {
   return applyDecorators(
+    ProductIdIsMandatorySwagger(),
+    ProductNotFoundSwagger(),
     ProductIdParamSwagger(),
-    ApiNotFoundResponse({
-      example: {
-        message: 'This product is not in your basket!',
-        error: 'Not Found',
-        statusCode: 404,
-      },
-      description:
-        "There is no product with this ID in the user's shopping cart to be deleted",
-    }),
     ApiResponse({
       example: {
         message: 'The product has been removed from your shopping cart',

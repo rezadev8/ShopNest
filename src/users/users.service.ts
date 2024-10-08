@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { encodePassword } from 'src/utils/bcrypt';
 import {  plainToInstance } from 'class-transformer';
 import { CreateUserDto } from 'src/auth/dtos/create-user.dto';
@@ -39,7 +39,7 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOneBy({ id:Equal(id) });
   }
 
   async findOneByUserName(username: any) {

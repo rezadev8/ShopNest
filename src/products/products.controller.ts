@@ -9,7 +9,6 @@ import {
   Patch,
   Post,
   Query,
-  Req,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -23,8 +22,7 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { EditProductDto } from './dtos/edit-product.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Product } from './entities/products.entity';
+import {  ApiTags } from '@nestjs/swagger';
 import {
   CreateProductSwagger,
   DeleteProductSwagger,
@@ -69,7 +67,7 @@ export class ProductController {
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
-  @Patch('product/:id')
+  @Patch('/:id/product')
   editProduct(@Param() { id }, @Body() editProductDto: EditProductDto) {
     return this.productService.editProduct(id, editProductDto);
   }
@@ -77,7 +75,7 @@ export class ProductController {
   @DeleteProductSwagger()
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
-  @Delete('product/:id')
+  @Delete('/:id/product')
   deleteProduct(@Param() { id }) {
     return this.productService.deleteProduct(id);
   }

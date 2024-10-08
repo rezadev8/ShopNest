@@ -1,8 +1,9 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiNotFoundResponse, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 export const UnauthorizedSwagger = () => {
-  applyDecorators(
+  return applyDecorators(
+    ApiBearerAuth(),
     ApiResponse({
       example: {
         message:

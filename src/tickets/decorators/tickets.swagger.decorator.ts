@@ -1,7 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
-  ApiBearerAuth,
   ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
@@ -24,7 +23,6 @@ const NotFoundTicketSwagger = () => NotFoundErrorSwagger('Ticket not found!');
 
 export const GetUserTicketsSwagger = () => {
   return applyDecorators(
-    ApiBearerAuth(),
     ApiResponse({ example: [ticketExample], status: 200 }),
     InternalServerErrorSwagger({
       description: 'Server error in receiving user tickets',
@@ -35,7 +33,6 @@ export const GetUserTicketsSwagger = () => {
 
 export const SendMessageSwagger = () => {
   return applyDecorators(
-    ApiBearerAuth(),
     ApiResponse({
       status: 201,
       example: {
@@ -68,7 +65,6 @@ export const SendMessageSwagger = () => {
 
 export const GetTicketMessages = () => {
   return applyDecorators(
-    ApiBearerAuth(),
     ApiParam({ name: 'id', description: 'Ticket chatID' }),
     ApiResponse({
       status: 200,
@@ -91,7 +87,6 @@ export const GetTicketMessages = () => {
 
 export const DeleteTicketSwagger = () => {
   return applyDecorators(
-    ApiBearerAuth(),
     ApiParam({ name: 'id', description: 'Ticket chatID' }),
     ApiResponse({
       example: {
@@ -114,7 +109,6 @@ export const DeleteTicketSwagger = () => {
 
 export const UpdateTicketStatusSwagger = () => {
   return applyDecorators(
-    ApiBearerAuth(),
     ApiParam({
       name: 'id',
       description: 'Ticket chatId to change ticket status',

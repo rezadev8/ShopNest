@@ -92,6 +92,7 @@ export class BasketService {
         quantity:basketProduct.quantity
       };
     } catch (error) {
+      console.log(error)
       throw new InternalServerErrorException('Uh-oh! We hit a snag on adding product to your basket!')
     }
   }

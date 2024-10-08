@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from 'src/products/entities/products.entity';
 import { User } from 'src/users/entities/users.entity';
 import { Basket } from './entities/baskets';
-import { ProductExistenceMiddlewareMiddleware } from './middlewares/product-existence-middleware/product-existence-middleware.middleware';
+import { ProductExistenceMiddlewareMiddleware } from './middlewares/product-existence-middleware.middleware';
 import { BasketProduct } from './entities/basket-product';
 
 @Module({
@@ -18,6 +18,6 @@ export class BasketsModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(ProductExistenceMiddlewareMiddleware)
-      .forRoutes('/baskets/add/:productId' , '/baskets/delete/:productId')
+      .forRoutes('/baskets/:productId/add' , '/baskets/:productId/delete')
   }
 }

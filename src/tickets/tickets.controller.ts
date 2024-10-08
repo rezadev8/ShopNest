@@ -20,8 +20,16 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { UpdateStatusDto } from './dtos/update-status.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { DeleteTicketSwagger, GetTicketMessages, GetUserTicketsSwagger, SendMessageSwagger, UpdateTicketStatusSwagger } from './decorators/tickets.swagger.decorator';
+import {
+  DeleteTicketSwagger,
+  GetTicketMessages,
+  GetUserTicketsSwagger,
+  SendMessageSwagger,
+  UpdateTicketStatusSwagger,
+} from './decorators/tickets.swagger.decorator';
+import { UnauthorizedSwagger } from 'src/common/decorators/global.swagger.decorator';
 
+@UnauthorizedSwagger()
 @ApiTags('Tickets')
 @UseGuards(AuthGuard)
 @Controller('tickets')
@@ -43,8 +51,8 @@ export class TicketsController {
 
   @GetTicketMessages()
   @Get('/:id/messages')
-  getTicketMessages(@Req() req , @Param() { id }) {
-    return this.ticketService.getTicketMessages(id , req.user?.id);
+  getTicketMessages(@Req() req, @Param() { id }) {
+    return this.ticketService.getTicketMessages(id, req.user?.id);
   }
 
   @DeleteTicketSwagger()

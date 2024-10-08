@@ -14,7 +14,6 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({ example: 'reza' })
-  @IsOptional()
   @MinLength(3, { message: 'name can not be less than 3 character' })
   @MaxLength(100, { message: 'name cannot be more than 100 characters' })
   name: string;
@@ -23,10 +22,10 @@ export class CreateUserDto {
   @IsPhoneNumber('IR', { message: 'Please enter a valid phone number.' })
   phone: number;
 
-  @ApiProperty({ example: 'Abc12345', minLength: 8 })
+  @ApiProperty({ example: 'Abc1234', minLength:8  })
   @IsStrongPassword(
     { minLength: 8 },
-    { message: 'Password needs to be at least 8 characters, thanks! :)' },
+    { message: 'Password needs to be at least 8 characters.' },
   )
   password: string;
 }

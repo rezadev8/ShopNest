@@ -52,7 +52,7 @@ export class BlogController {
   @DeletePostSwagger()
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
-  @Delete('post/:id')
+  @Delete(':id/post')
   deletePost(@Param() { id }) {
     return this.blogService.deletePost(id);
   }
@@ -61,7 +61,7 @@ export class BlogController {
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
-  @Patch('post/:id')
+  @Patch('/:id/post')
   editPost(@Param() { id }, @Body() editPostDto: EditPostDto) {
     return this.blogService.editPost(editPostDto, id);
   }

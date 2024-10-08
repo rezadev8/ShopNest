@@ -1,12 +1,11 @@
 import {
-  HttpException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
-import { Like, Repository } from 'typeorm';
+import { Equal, Like, Repository } from 'typeorm';
 import { NewProductDto } from './dtos/new-product.dto';
 import { UserService } from 'src/users/users.service';
 import { userInterface } from 'src/users/types/user';
@@ -23,7 +22,7 @@ export class ProductService {
 
   findOne(id: number) {
     return this.productRepository.findOne({
-      where: { id },
+      where: { id:Equal(id) },
     });
   }
 

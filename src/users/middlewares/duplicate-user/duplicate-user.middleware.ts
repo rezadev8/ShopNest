@@ -6,7 +6,7 @@ import {
   Response,
 } from '@nestjs/common';
 import { UserService } from 'src/users/users.service';
-import { IsNull } from 'typeorm';
+import { Equal, IsNull } from 'typeorm';
 
 @Injectable()
 export class DuplicateUserMiddleware implements NestMiddleware {
@@ -15,8 +15,8 @@ export class DuplicateUserMiddleware implements NestMiddleware {
     const { phone, email } = req.body;
     const findUser = await this.usersService.findUserByProperties({
       where: [
-        { phone },
-        { email },
+        { phone:Equal(phone) },
+        { email:Equal(email) },
       ],
     });
 
