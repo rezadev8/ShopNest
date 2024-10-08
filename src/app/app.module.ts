@@ -15,9 +15,12 @@ import { Post } from '../blog/entities/posts';
 import { App } from './entities/app-info.entitie';
 import { Ticket } from 'src/tickets/entities/tickets.entitie';
 import { TicketsModule } from 'src/tickets/tickets.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', '..', 'public') }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
