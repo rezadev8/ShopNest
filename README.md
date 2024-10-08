@@ -1,73 +1,100 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# ShopNest
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+**ShopNest** is an e-commerce platform built with **NestJS**, designed to demonstrate a clean and well-structured project that covers essential functionalities such as user management, product handling, shopping cart, ticketing system, and more. This project aims to help developers understand how to implement RESTful APIs, JWT-based authentication, RBAC security, and CRUD operations in NestJS.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
 
-## Description
+- [Features](#features)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [API Routes](#api-routes)
+  - [App](#app)
+  - [Auth](#auth)
+  - [Baskets](#baskets)
+  - [Blog](#blog)
+  - [Products](#products)
+  - [Tickets](#tickets)
+  - [Users](#users)
+- [Security](#security)
+- [License](#license)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
+
+## Features
+
+- **User Management**: Admin can manage, delete, and retrieve user information.
+- **Ticketing System**: Users can create tickets, and admins can respond, update status, or delete tickets.
+- **Product Management**: Admins can add, edit, and delete products.
+- **Shopping Cart**: Users can manage their shopping baskets by adding, retrieving, or deleting items.
+- **Authentication**: JWT-based authentication with role-based access control (RBAC) for protecting routes.
+- **CRUD Operations**: Fully implemented Create, Read, Update, Delete (CRUD) functionality for all resources.
+
+---
 
 ## Installation
 
-```bash
-$ npm install
-```
+To run ShopNest locally, follow these steps:
 
-## Running the app
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/shopnest.git
+    cd shopnest
+    ```
 
-```bash
-# development
-$ npm run start
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
 
-# watch mode
-$ npm run start:dev
+3. Set up the environment variables. Create a `.env` file in the root directory and add the following variables:
+    ```bash
+    DATABASE_URL=<your-database-url>
+    JWT_SECRET=<your-jwt-secret>
+    ```
 
-# production mode
-$ npm run start:prod
-```
+4. Run the application:
+    ```bash
+    npm run start
+    ```
 
-## Test
+---
 
-```bash
-# unit tests
-$ npm run test
+## API Routes
 
-# e2e tests
-$ npm run test:e2e
+### App
+- `GET /` : Returns basic information about the application.
 
-# test coverage
-$ npm run test:cov
-```
+### Auth
+- `POST /auth/login` : Authenticate users and provide a JWT token.
+- `POST /auth/register` : Register a new user.
 
-## Support
+### Baskets
+- `GET /baskets` : Retrieve the current user's shopping basket.
+- `POST /baskets/add` : Add an item to the basket.
+- `DELETE /baskets/remove` : Remove an item from the basket.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Blog
+- `GET /blog` : Get a list of blog posts.
+- `POST /blog/create` : Admins can create a new blog post.
 
-## Stay in touch
+### Products
+- `GET /products` : Retrieve a list of products.
+- `POST /products/create` : Admins can add a new product.
+- `PUT /products/update/:id` : Admins can update a product.
+- `DELETE /products/delete/:id` : Admins can delete a product.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Tickets
+- `POST /tickets/create` : Users can create a new ticket.
+- `GET /tickets` : Admins can view all tickets.
+- `PUT /tickets/update/:id` : Admins can update the status of a ticket.
+- `DELETE /tickets/delete/:id` : Admins can delete a ticket.
 
-## License
+### Users
+- `GET /users` : Retrieve all users (admin only).
+- `DELETE /users/delete/:id` : Admins can delete a user.
 
-Nest is [MIT licensed](LICENSE).
+---
+
+## Security
+
+ShopNest uses **JWT (JSON Web Token)** for authentication and **RBAC (Role-Based Access Control)** to secure different routes based on user roles. Regular users have limited access, while admins have full control over the resources.
