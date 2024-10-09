@@ -25,7 +25,10 @@ export class Product {
   @Column({ type: 'int', unique: false })
   price: number;
 
-  @ApiProperty({ example: 'This keyboard was made by Super Man and it emits lasers from its buttons' })
+  @ApiProperty({
+    example:
+      'This keyboard was made by Super Man and it emits lasers from its buttons',
+  })
   @Column({ type: 'varchar', unique: false })
   description: string;
 
@@ -42,6 +45,10 @@ export class Product {
     onDelete: 'CASCADE',
   })
   basketProducts: BasketProduct[];
+
+  @ApiProperty({ example: 2, description: 'Number of product inventory' })
+  @Column({ default: 1 })
+  quantity: number;
 
   @ApiProperty({ example: '2024-10-06T16:40:07.703Z' })
   @CreateDateColumn()

@@ -17,6 +17,8 @@ import { Ticket } from 'src/tickets/entities/tickets.entitie';
 import { TicketsModule } from 'src/tickets/tickets.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { TransactionsModule } from 'src/transactions/transactions.module';
+import { Transaction } from 'src/transactions/entities/transactions.entitie';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { join } from 'path';
       username: 'root',
       password: '',
       database: 'found_404',
-      entities: [User , Product , Basket , BasketProduct ,  Post , App , Ticket],
+      entities: [User , Product , Basket , BasketProduct ,  Post , App , Ticket , Transaction],
       synchronize: true,
     }),
     TypeOrmModule.forFeature([App]),
@@ -37,7 +39,8 @@ import { join } from 'path';
     ProductModule,
     BasketsModule,
     BlogModule,
-    TicketsModule
+    TicketsModule,
+    TransactionsModule
   ],
   controllers: [AppController],
   providers: [AppService],
