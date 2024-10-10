@@ -8,7 +8,7 @@ async function bootstrap() {
   const appPort = process.env?.PORT || 3000
 
   const config = new DocumentBuilder()
-    .setTitle('Store project')
+    .setTitle('Nest store')
     .addBearerAuth({ type: 'http' })
     .setDescription('Simple store')
     .setVersion('1.0')

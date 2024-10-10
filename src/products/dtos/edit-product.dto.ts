@@ -21,4 +21,9 @@ export class EditProductDto {
   @IsOptional()
   @IsNotEmpty()
   cover: string;
+
+  @ApiProperty({ example: 1, required:false })
+  @IsOptional()
+  @IsNotEmpty()
+  quantity:number;
 }

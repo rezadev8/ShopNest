@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class NewProductDto {
   @ApiProperty({ example: 'Keyboard' })
@@ -17,4 +17,9 @@ export class NewProductDto {
   @ApiProperty({ example: '/keyboard.png' })
   @IsNotEmpty()
   cover: string;
+
+  @ApiProperty({ example: 1 })
+  @IsNumber()
+  @IsNotEmpty()
+  quantity:number;
 }

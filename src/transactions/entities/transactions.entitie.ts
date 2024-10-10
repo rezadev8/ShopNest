@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -18,13 +19,14 @@ export class Transaction {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.transactions)
   user: User;
 
   @ApiProperty({ example: 'DMKSD25-SAMSA56-SAKMSAK'})
   @Column()
   token: string;
 
+  @JoinTable()
   @ManyToMany(() => Product)
   products: Product[];
 
@@ -32,7 +34,7 @@ export class Transaction {
   @Column()
   amount:number;
 
-  @ApiProperty({ example: Status.CONFIRMED , type:'enum' , enum:Status })
+  @ApiProperty({ example: Status.PENDING , type:'enum' , enum:Status })
   @Column({type:'enum' , enum:Status , default:Status.PENDING})
   status:Status;
 

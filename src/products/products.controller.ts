@@ -17,7 +17,6 @@ import { ProductService } from './products.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { NewProductDto } from './dtos/new-product.dto';
 import { userInterface } from 'src/users/types/user';
-import { Request } from 'express';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';

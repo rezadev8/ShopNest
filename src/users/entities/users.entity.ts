@@ -3,6 +3,7 @@ import { Role } from 'src/auth/enums/role.enum';
 import { Post } from 'src/blog/entities/posts';
 import { Product } from 'src/products/entities/products.entity';
 import { Ticket } from 'src/tickets/entities/tickets.entitie';
+import { Transaction } from 'src/transactions/entities/transactions.entitie';
 import {
   Column,
   CreateDateColumn,
@@ -54,6 +55,9 @@ export class User {
 
   @OneToMany(() => Ticket, (ticket) => ticket.user, { onDelete: 'CASCADE' })
   tickets: Ticket[];
+
+  @OneToMany(() => Transaction , transaction => transaction.user , { onDelete: 'CASCADE' })
+  transactions:Transaction[]
 
   @ApiProperty({ example: '2024-10-06T16:40:07.703Z' })
   @CreateDateColumn()

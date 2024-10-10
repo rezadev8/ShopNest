@@ -17,7 +17,7 @@ import { EditProductDto } from './dtos/edit-product.dto';
 export class ProductService {
   constructor(
     @InjectRepository(Product) private productRepository: Repository<Product>,
-    private readonly userService: UserService,
+    private readonly userService: UserService
   ) {}
 
   findOne(id: number) {
@@ -46,8 +46,6 @@ export class ProductService {
   }
 
   async createProduct(newProdct: NewProductDto, user: userInterface) {
-    const { cover, description, name, price } = newProdct;
-
     const findUser = await this.userService.findOne(user.id);
 
     if (!findUser)
@@ -55,11 +53,8 @@ export class ProductService {
 
     try {
       const product = this.productRepository.create({
-        name,
-        price,
-        cover,
-        description,
-        owner: findUser,
+        ...newProdct,
+        owner: findUser
       });
 
       const saveProduct = await this.productRepository.save(product);

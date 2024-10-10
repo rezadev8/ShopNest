@@ -10,8 +10,7 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/sign-in.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { ApiCreatedResponse, ApiTags, ApiResponse } from '@nestjs/swagger';
-import { User } from 'src/users/entities/users.entity';
+import { ApiTags } from '@nestjs/swagger';
 import { SignInSwagger, SignUpSwagger } from './decorators/auth.swagger';
 
 @ApiTags('Auth')
