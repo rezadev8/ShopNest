@@ -19,17 +19,20 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TransactionsModule } from 'src/transactions/transactions.module';
 import { Transaction } from 'src/transactions/entities/transactions.entitie';
+import { ConfigModule } from '@nestjs/config';
+
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', '..', 'public') }),
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'found_404',
+			host: process.env.DB_HOST,
+			port: +process.env.DB_PORT,
+			username: process.env.DB_USERNAME,
+			password: process.env.DB_PASSWORD,
+			database: process.env.DB_NAME,
       entities: [User , Product , Basket , BasketProduct ,  Post , App , Ticket , Transaction],
       synchronize: true,
     }),
