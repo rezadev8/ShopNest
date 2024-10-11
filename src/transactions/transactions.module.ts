@@ -8,13 +8,30 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BasketService } from 'src/baskets/baskets.service';
 import { Basket } from 'src/baskets/entities/baskets';
 import { BasketProduct } from 'src/baskets/entities/basket-product';
-import { ProductService } from 'src/products/products.service';
 import { UserService } from 'src/users/users.service';
+import { BullModule } from '@nestjs/bull';
+import { TransactionsProcessor } from './transactions.processor';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Transaction, Product, User , Basket , BasketProduct])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Transaction,
+      Product,
+      User,
+      Basket,
+      BasketProduct,
+    ]),
+    BullModule.registerQueue({
+      name: 'transactions-queue',
+    }),
+  ],
   controllers: [TransactionsController],
-  providers: [TransactionsService , BasketService , ProductService , UserService],
-  exports:[TransactionsService]
+  providers: [
+    TransactionsService,
+    BasketService,
+    UserService,
+    TransactionsProcessor,
+  ],
+  exports: [TransactionsService],
 })
 export class TransactionsModule {}

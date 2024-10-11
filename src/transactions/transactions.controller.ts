@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
   Param,
   Patch,
   Post,
@@ -25,9 +26,12 @@ export class TransactionsController {
 
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
-  @UsePipes(new ValidationPipe({whitelist:true}))
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   @Patch('/:token/transaction')
-  changeTransactionStatus(@Param() {token},@Body() changeStatusDto: ChangeTransactionStatusDto) {
+  changeTransactionStatus(
+    @Param() { token },
+    @Body() changeStatusDto: ChangeTransactionStatusDto,
+  ) {
     return this.transactionService.changeTransactionStatusByToken(
       token,
       changeStatusDto.status,
@@ -49,13 +53,29 @@ export class TransactionsController {
 
   @UseGuards(AuthGuard)
   @Post('buy')
-  buyProducts(@Req() req) {
-    return this.transactionService.buyPlan(req.user?.id);
+  async buyProducts(@Req() req) {
+    const response = await this.transactionService.addTransactionToQueue(
+      req.user?.id,
+      'buy-products'
+    );
+
+    if (response.status !== 200)
+      throw new HttpException(response.message, response.status);
+
+    return response.data;
   }
 
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('verify')
-  verifyPayment(@Body() verifyTransaction: VerifyPaymentDto) {
-    return this.transactionService.verifyPayment(verifyTransaction.token);
+  async verifyPayment(@Body() verifyTransaction: VerifyPaymentDto) {
+    const response = await this.transactionService.addTransactionToQueue(
+      verifyTransaction.token,
+      'verify-payment'
+    );
+
+    if (response.status !== 200)
+      throw new HttpException(response.message, response.status);
+
+    return response
   }
 }

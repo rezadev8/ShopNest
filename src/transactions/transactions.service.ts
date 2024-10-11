@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   forwardRef,
   Inject,
   Injectable,
@@ -13,6 +12,8 @@ import { BasketService } from 'src/baskets/baskets.service';
 import { UserService } from 'src/users/users.service';
 import { v1 as uuidv4 } from 'uuid';
 import { Status } from './enums/status.enum';
+import { Queue } from 'bull';
+import { InjectQueue } from '@nestjs/bull';
 
 @Injectable()
 export class TransactionsService {
@@ -22,7 +23,16 @@ export class TransactionsService {
     @Inject(forwardRef(() => BasketService))
     private readonly basketService: BasketService,
     private readonly usersService: UserService,
+    @InjectQueue('transactions-queue') private transactionQueue: Queue,
   ) {}
+
+  async addTransactionToQueue(transactionData: any, queueName: string) {
+    const job = await this.transactionQueue.add(queueName, transactionData , {backoff:5000 ,});
+
+    const result = await job.finished();
+
+    return result;
+  }
 
   async getTransactions(skip: number, take: number, status: Status) {
     try {
@@ -53,7 +63,7 @@ export class TransactionsService {
     }
   }
 
-  async buyPlan(userId: number) {
+  async processBuyProducts(userId: number) {
     try {
       const findBasket = await this.basketService.findOne(userId);
       const user = await this.usersService.findOne(userId);
@@ -64,9 +74,10 @@ export class TransactionsService {
       await this.changeTransactionStatusByUserId(user.id);
 
       if (findBasket.basketProducts.length < 1)
-        throw new BadRequestException(
-          'Your basket is empty. You cannot proceed to checkout',
-        );
+        return {
+          status: 400,
+          message: 'Your basket is empty. You cannot proceed to checkout',
+        };
 
       for (const basketProduct of findBasket.basketProducts) {
         const product = basketProduct.product;
@@ -99,48 +110,62 @@ export class TransactionsService {
         token: uuidv4(),
       });
 
-      return { productsRemoved, transaction: saveTransaction };
+      return {
+        status: 200,
+        data: { productsRemoved, transaction: saveTransaction },
+      };
     } catch (error) {
-      console.log(error);
-      if (!error.response)
-        throw new InternalServerErrorException(
-          'Oops! There was an issue with the product purchase process!',
-        );
-      throw error;
+      if (error.response) {
+        const { message, statusCode } = error.response;
+
+        return { status: statusCode, message };
+      }
+      return {
+        status: 500,
+        message: 'Oops! There was an issue with the product purchase process!',
+      };
     }
   }
 
-  async verifyPayment(transactionToken: string) {
+  async processVerifyPayment(transactionToken: string) {
     try {
       const transaction = await this.findTransaction(transactionToken);
 
-      if (!transaction) throw new NotFoundException('Transaction not found!');
+      if (!transaction)
+        return { status: 404, message: 'Transaction not found!' };
 
       // Receive payment confirmation from the payment gateway
       const checkTransaction = true;
 
-      if (!checkTransaction) {
-        throw new BadRequestException('Payment not confirmed! contact support');
-      }
+      if (!checkTransaction)
+        return {
+          status: 400,
+          message: 'Payment not confirmed! contact support',
+        };
 
       const findBasket = await this.basketService.findOne(transaction.user.id);
       if (!findBasket)
-        throw new NotFoundException("The user's shopping cart was not found!");
+        return {
+          status: 404,
+          message: "The user's shopping cart was not found!",
+        };
 
       await this.basketService.clearUserBasket(findBasket);
-
       transaction.status = Status.CONFIRMED;
-
       await this.transactionsRepository.save(transaction);
 
-      return { message: 'Payment has been made successfully!' };
+      return { status:200 ,  message: 'Payment has been made successfully!' };
     } catch (error) {
-      console.log(error);
-      if (!error.response)
-        throw new InternalServerErrorException(
+      if (error.response) {
+        const { message, statusCode } = error.response;
+
+        return { status: statusCode, message };
+      }
+      return {
+        status: 500,
+        message:
           'There is a problem in confirming the transaction! Try again or contact support',
-        );
-      throw error;
+      };
     }
   }
 

@@ -20,21 +20,38 @@ import { join } from 'path';
 import { TransactionsModule } from 'src/transactions/transactions.module';
 import { Transaction } from 'src/transactions/entities/transactions.entitie';
 import { ConfigModule } from '@nestjs/config';
-
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', '..', 'public') }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'public'),
+    }),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
-			host: process.env.DB_HOST,
-			port: +process.env.DB_PORT,
-			username: process.env.DB_USERNAME,
-			password: process.env.DB_PASSWORD,
-			database: process.env.DB_NAME,
-      entities: [User , Product , Basket , BasketProduct ,  Post , App , Ticket , Transaction],
+      host: process.env.DB_HOST,
+      port: +process.env.DB_PORT,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      entities: [
+        User,
+        Product,
+        Basket,
+        BasketProduct,
+        Post,
+        App,
+        Ticket,
+        Transaction,
+      ],
       synchronize: true,
+    }),
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST || 'localhost',
+        port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+      },
     }),
     TypeOrmModule.forFeature([App]),
     UserModule,
@@ -43,7 +60,7 @@ import { ConfigModule } from '@nestjs/config';
     BasketsModule,
     BlogModule,
     TicketsModule,
-    TransactionsModule
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
