@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Basket } from './entities/baskets';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { userInterface } from 'src/users/types/user';
 import { UserService } from 'src/users/users.service';
@@ -29,7 +29,7 @@ export class BasketService {
   async getBasketProducts(userId: number) {
     try {
       const basketProducts = this.basketRepository.find({
-        where: { user: { id: userId } },
+        where: { user: { id: Equal(userId) } },
         relations: {
           basketProducts: { product: true },
         },
@@ -45,14 +45,14 @@ export class BasketService {
 
   async findOne(userId: number) {
     return await this.basketRepository.findOne({
-      where: { user: { id: userId } },
+      where: { user: { id: Equal(userId) } },
       relations: { basketProducts: { product: true }, user: true },
     });
   }
 
   async findOneBasketProduct(basketId: number, productId: number) {
     return await this.basketProductRepository.findOne({
-      where: { basket: { id: basketId }, product: { id: productId } },
+      where: { basket: { id: Equal(basketId) }, product: { id: Equal(productId) } },
       relations: { product: true },
     });
   }
@@ -123,8 +123,8 @@ export class BasketService {
     try {
       const findBasketProduct = basketProduct ? basketProduct : await this.basketProductRepository.findOne({
         where: {
-          product: { id: product.id },
-          basket: { user: { id: userId } },
+          product: { id: Equal(product.id) },
+          basket: { user: { id: Equal(userId) } },
         },
       });
 
@@ -157,7 +157,7 @@ export class BasketService {
 
       return {
         message: 'The product has been removed from your shopping cart',
-        product: { id: product.id },
+        product: { id: Equal(product.id) },
         quantityRemoved
       };
     } catch (error) {

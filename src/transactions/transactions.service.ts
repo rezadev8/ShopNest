@@ -180,7 +180,7 @@ export class TransactionsService {
   async changeTransactionStatusByUserId(userId: number) {
     try {
       const transaction = await this.transactionsRepository.findOne({
-        where: { user: { id: userId }, status: Status.PENDING },
+        where: { user: { id: Equal(userId) }, status: Status.PENDING },
       });
 
       if (transaction) {
@@ -199,7 +199,7 @@ export class TransactionsService {
   async changeTransactionStatusById(id: number, status: Status) {
     try {
       const transaction = await this.transactionsRepository.findOne({
-        where: { id },
+        where: { id:Equal(id) },
       });
 
       if (!transaction) throw new TransactionNotFoundException();
@@ -219,7 +219,7 @@ export class TransactionsService {
   async getUserTransactions(userId: number) {
     try {
       const user = await this.usersService.findUserByProperties({
-        where: { id: userId },
+        where: { id: Equal(userId) },
         relations: { transactions: true },
       });
 

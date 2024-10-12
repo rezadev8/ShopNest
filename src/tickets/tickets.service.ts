@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ticket } from './entities/tickets.entitie';
-import { IsNull, Not, Repository } from 'typeorm';
+import { Equal, IsNull, Not, Repository } from 'typeorm';
 import { SendMessagetDto } from './dtos/send-message.dto';
 import { UserService } from 'src/users/users.service';
 import { v1 as uuidv4 } from 'uuid';
@@ -38,7 +38,7 @@ export class TicketService {
   async getUserTickets(userId: number) {
     try {
       const tickets = await this.ticketRepository.find({
-        where: { user: { id: userId }, title: Not(IsNull()) },
+        where: { user: { id: Equal(userId) }, title: Not(IsNull()) },
       });
 
       return tickets;

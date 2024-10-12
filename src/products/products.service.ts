@@ -75,7 +75,7 @@ export class ProductService {
   async editProduct(id: number, editProductDto: EditProductDto) {
     try {
       const product = await this.findOneByCustomQuery({
-        where: { id },
+        where: { id:Equal(id) },
         relations: { basketProducts: true },
       });
 

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { Post } from './entities/posts';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { Equal, Like, Repository } from 'typeorm';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { UserService } from 'src/users/users.service';
 import { userInterface } from 'src/users/types/user';
@@ -39,7 +39,7 @@ export class BlogService {
   }
 
   findOnePost(id: number) {
-    return this.postRepository.findOneBy({ id });
+    return this.postRepository.findOneBy({ id:Equal(id) });
   }
 
   async handleCreatePost(
