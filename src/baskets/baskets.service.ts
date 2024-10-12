@@ -118,9 +118,10 @@ export class BasketService {
     product: Product,
     userId: number,
     removeQuantity?: number,
+    basketProduct?:BasketProduct
   ) {
     try {
-      const findBasketProduct = await this.basketProductRepository.findOne({
+      const findBasketProduct = basketProduct ? basketProduct : await this.basketProductRepository.findOne({
         where: {
           product: { id: product.id },
           basket: { user: { id: userId } },

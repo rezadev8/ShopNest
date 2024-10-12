@@ -19,11 +19,15 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { Status } from './enums/status.enum';
 import { ChangeTransactionStatusDto } from './dtos/change-status.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { BuyProducts, ChangeTransactionStatusSwagger, GetTransactions, GetUserTransactions, VerifyTransaction } from './decorators/transactions.swagger.decorator';
 
+@ApiTags('Transactions')
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionService: TransactionsService) {}
 
+  @ChangeTransactionStatusSwagger()
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
@@ -38,6 +42,7 @@ export class TransactionsController {
     );
   }
 
+  @GetTransactions()
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
   @Get('')
@@ -51,6 +56,14 @@ export class TransactionsController {
     );
   }
 
+  @GetUserTransactions()
+  @UseGuards(AuthGuard)
+  @Get('transaction')
+  async getUserTransactions(@Req() req){
+    return this.transactionService.getUserTransactions(req.user?.id)
+  }
+
+  @BuyProducts()
   @UseGuards(AuthGuard)
   @Post('buy')
   async buyProducts(@Req() req) {
@@ -65,6 +78,7 @@ export class TransactionsController {
     return response.data;
   }
 
+  @VerifyTransaction()  
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('verify')
   async verifyPayment(@Body() verifyTransaction: VerifyPaymentDto) {

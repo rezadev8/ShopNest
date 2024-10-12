@@ -19,10 +19,10 @@ export class Transaction {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.transactions)
+  @ManyToOne(() => User, (user) => user.transactions , { onDelete: 'CASCADE' })
   user: User;
 
-  @ApiProperty({ example: 'DMKSD25-SAMSA56-SAKMSAK'})
+  @ApiProperty({ example: 'ab39b000-8751-11ef-b6ba-cffa029061d1'})
   @Column()
   token: string;
 

@@ -14,6 +14,8 @@ import { v1 as uuidv4 } from 'uuid';
 import { Status } from './enums/status.enum';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
+import { plainToInstance } from 'class-transformer';
+import { SerializedTransaction } from './types/serializedTransactions';
 
 @Injectable()
 export class TransactionsService {
@@ -27,7 +29,9 @@ export class TransactionsService {
   ) {}
 
   async addTransactionToQueue(transactionData: any, queueName: string) {
-    const job = await this.transactionQueue.add(queueName, transactionData , {backoff:5000 ,});
+    const job = await this.transactionQueue.add(queueName, transactionData, {
+      backoff: 5000,
+    });
 
     const result = await job.finished();
 
@@ -65,19 +69,19 @@ export class TransactionsService {
 
   async processBuyProducts(userId: number) {
     try {
-      const findBasket = await this.basketService.findOne(userId);
       const user = await this.usersService.findOne(userId);
-      const products = [];
-      const productsRemoved = [];
-      let totalAmount = 0;
-
       await this.changeTransactionStatusByUserId(user.id);
 
-      if (findBasket.basketProducts.length < 1)
+      const findBasket = await this.basketService.findOne(userId);
+      if (!findBasket || findBasket.basketProducts.length < 1)
         return {
           status: 400,
           message: 'Your basket is empty. You cannot proceed to checkout',
         };
+
+      const products = [];
+      const productsRemoved = [];
+      let totalAmount = 0;
 
       for (const basketProduct of findBasket.basketProducts) {
         const product = basketProduct.product;
@@ -89,6 +93,7 @@ export class TransactionsService {
               product,
               userId,
               basketProduct.quantity - product.quantity,
+              basketProduct,
             );
 
           productsRemoved.push({
@@ -112,7 +117,10 @@ export class TransactionsService {
 
       return {
         status: 200,
-        data: { productsRemoved, transaction: saveTransaction },
+        data: {
+          productsRemoved,
+          transaction: plainToInstance(SerializedTransaction, saveTransaction),
+        },
       };
     } catch (error) {
       if (error.response) {
@@ -154,7 +162,7 @@ export class TransactionsService {
       transaction.status = Status.CONFIRMED;
       await this.transactionsRepository.save(transaction);
 
-      return { status:200 ,  message: 'Payment has been made successfully!' };
+      return { status: 200, message: 'Payment has been made successfully!' };
     } catch (error) {
       if (error.response) {
         const { message, statusCode } = error.response;
@@ -205,6 +213,21 @@ export class TransactionsService {
           'Oops! Server error while changing transaction status!',
         );
       throw error;
+    }
+  }
+
+  async getUserTransactions(userId: number) {
+    try {
+      const user = await this.usersService.findUserByProperties({
+        where: { id: userId },
+        relations: { transactions: true },
+      });
+
+      return user.transactions;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Oops! Server error while getting user transactions',
+      );
     }
   }
 }

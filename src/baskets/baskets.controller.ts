@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { BasketService } from './baskets.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { userInterface } from 'src/users/types/user';
@@ -20,6 +20,7 @@ export class BasketsController {
     return this.basketService.getBasketProducts(user.id)
   }
 
+  @HttpCode(200)
   @AddProductToBasketSwagger()
   @Post('/:productId/add')
   addProductToBasket(@Req() req, @CurrentUser() user: userInterface) {
