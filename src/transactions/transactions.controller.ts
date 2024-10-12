@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   Param,
@@ -20,7 +21,7 @@ import { Role } from 'src/auth/enums/role.enum';
 import { Status } from './enums/status.enum';
 import { ChangeTransactionStatusDto } from './dtos/change-status.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { BuyProducts, ChangeTransactionStatusSwagger, GetTransactions, GetUserTransactions, VerifyTransaction } from './decorators/transactions.swagger.decorator';
+import { BuyProductsSwagger, ChangeTransactionStatusSwagger, DeleteTransactionSwagger, GetTransactionsSwagger, GetUserTransactionsSwagger, VerifyTransactionSwagger } from './decorators/transactions.swagger.decorator';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -31,18 +32,18 @@ export class TransactionsController {
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
-  @Patch('/:token/transaction')
+  @Patch('/:id/transaction')
   changeTransactionStatus(
-    @Param() { token },
+    @Param() { id },
     @Body() changeStatusDto: ChangeTransactionStatusDto,
   ) {
-    return this.transactionService.changeTransactionStatusByToken(
-      token,
+    return this.transactionService.changeTransactionStatusById(
+      id,
       changeStatusDto.status,
     );
   }
 
-  @GetTransactions()
+  @GetTransactionsSwagger()
   @Roles(Role.ADNIM)
   @UseGuards(AuthGuard)
   @Get('')
@@ -56,14 +57,14 @@ export class TransactionsController {
     );
   }
 
-  @GetUserTransactions()
+  @GetUserTransactionsSwagger()
   @UseGuards(AuthGuard)
   @Get('transaction')
   async getUserTransactions(@Req() req){
     return this.transactionService.getUserTransactions(req.user?.id)
   }
 
-  @BuyProducts()
+  @BuyProductsSwagger()
   @UseGuards(AuthGuard)
   @Post('buy')
   async buyProducts(@Req() req) {
@@ -78,7 +79,7 @@ export class TransactionsController {
     return response.data;
   }
 
-  @VerifyTransaction()  
+  @VerifyTransactionSwagger()  
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('verify')
   async verifyPayment(@Body() verifyTransaction: VerifyPaymentDto) {
@@ -91,5 +92,13 @@ export class TransactionsController {
       throw new HttpException(response.message, response.status);
 
     return response
+  }
+  
+  @DeleteTransactionSwagger()
+  @Roles(Role.ADNIM)
+  @UseGuards(AuthGuard)
+  @Delete('/:id/transaction')
+  removeTransaction(@Param() {id}){
+    return this.transactionService.deleteTransaction(id)
   }
 }

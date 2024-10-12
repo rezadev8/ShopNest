@@ -25,10 +25,9 @@ export const ChangeTransactionStatusSwagger = () => {
   return applyDecorators(
     UnauthorizedSwagger(),
     ApiParam({
-      name: 'token',
-      example: 'ab39b000-8751-11ef-b6ba-cffa029061d1',
+      name: 'id',
+      example: 1,
     }),
-    NotFoundErrorSwagger('Transaction not found!'),
     InternalServerErrorSwagger({
       message: 'Oops! Server error while changing transaction status!',
       description: 'Server error when changing transaction status',
@@ -45,7 +44,7 @@ export const ChangeTransactionStatusSwagger = () => {
   );
 };
 
-export const GetTransactions = () => {
+export const GetTransactionsSwagger = () => {
   return applyDecorators(
     UnauthorizedSwagger(),
     ApiOkResponse({
@@ -58,7 +57,7 @@ export const GetTransactions = () => {
   );
 };
 
-export const GetUserTransactions = () => {
+export const GetUserTransactionsSwagger = () => {
   return applyDecorators(
     UnauthorizedSwagger(),
     InternalServerErrorSwagger({
@@ -69,7 +68,7 @@ export const GetUserTransactions = () => {
   );
 };
 
-export const BuyProducts = () => {
+export const BuyProductsSwagger = () => {
   return applyDecorators(
     UnauthorizedSwagger(),
     ApiCreatedResponse({
@@ -96,7 +95,7 @@ export const BuyProducts = () => {
   );
 };
 
-export const VerifyTransaction = () => {
+export const VerifyTransactionSwagger = () => {
   return applyDecorators(
     UnauthorizedSwagger(),
     NotFoundErrorSwagger(
@@ -118,6 +117,27 @@ export const VerifyTransaction = () => {
       message:
         'There is a problem in confirming the transaction! Try again or contact support | Oops! There was an issue with the clear user basket!',
       description: 'Server error while processing transaction',
+    }),
+  );
+};
+
+export const DeleteTransactionSwagger = () => {
+  return applyDecorators(
+    UnauthorizedSwagger(),
+    ApiParam({
+      name: 'id',
+      example: 1,
+    }),
+    NotFoundErrorSwagger('Transaction not found!'),
+    ApiOkResponse({
+      example: {
+        message: 'The transaction was successfully deleted',
+        transaction: { id: 1 },
+      },
+    }),
+    InternalServerErrorSwagger({
+      message: 'Oops! Server error when deleting transaction',
+      description: 'Server error when deleting transaction',
     }),
   );
 };

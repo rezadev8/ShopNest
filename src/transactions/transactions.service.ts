@@ -3,11 +3,10 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './entities/transactions.entitie';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { BasketService } from 'src/baskets/baskets.service';
 import { UserService } from 'src/users/users.service';
 import { v1 as uuidv4 } from 'uuid';
@@ -16,6 +15,7 @@ import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import { plainToInstance } from 'class-transformer';
 import { SerializedTransaction } from './types/serializedTransactions';
+import { TransactionNotFoundException } from './exceptions/transaction-notfound.exception';
 
 @Injectable()
 export class TransactionsService {
@@ -196,17 +196,17 @@ export class TransactionsService {
     }
   }
 
-  async changeTransactionStatusByToken(token: string, status: Status) {
+  async changeTransactionStatusById(id: number, status: Status) {
     try {
       const transaction = await this.transactionsRepository.findOne({
-        where: { token },
+        where: { id },
       });
 
-      if (!transaction) throw new NotFoundException('Transaction not found!');
+      if (!transaction) throw new TransactionNotFoundException();
       transaction.status = status;
       await this.transactionsRepository.save(transaction);
 
-      return { message: 'Status changed successfully', transaction: { token } };
+      return { message: 'Status changed successfully', transaction: { id } };
     } catch (error) {
       if (!error.status)
         throw new InternalServerErrorException(
@@ -228,6 +228,28 @@ export class TransactionsService {
       throw new InternalServerErrorException(
         'Oops! Server error while getting user transactions',
       );
+    }
+  }
+
+  async deleteTransaction(id: number) {
+    try {
+      const transaction = await this.transactionsRepository.findOne({
+        where: { id: Equal(id) },
+      });
+      if (!transaction) throw new TransactionNotFoundException();
+
+      await this.transactionsRepository.remove(transaction);
+
+      return {
+        message: 'The transaction was successfully deleted',
+        transaction: { id },
+      };
+    } catch (error) {
+      if (!error.response)
+        throw new InternalServerErrorException(
+          'Oops! Server error when deleting transaction',
+        );
+      else throw error;
     }
   }
 }
