@@ -66,7 +66,7 @@ Make sure you have **Redis** and **MySQL** installed on your system before runni
 - **Swagger**: API documentation and testing tool.
 - **Redis**: In-memory data structure store used for queuing.
 - **MySQL**: Relational database for storing application data.
-- **Class Validator** For validation of input information
+- **Class Validator**: For validation of input information
 
 ## Contributions & Feedback
 
