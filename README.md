@@ -24,8 +24,8 @@ Make sure you have **Redis** and **MySQL** installed on your system before runni
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/shopnest.git
-   cd shopnest
+   git clone https://github.com/rezadev8/ShopNest.git
+   cd ShopNest
    ```
 
 2. Install the dependencies:
@@ -63,10 +63,10 @@ Make sure you have **Redis** and **MySQL** installed on your system before runni
 - **TypeORM**: ORM for database management.
 - **Bull**: Job queue for handling background tasks.
 - **JWT**: JSON Web Tokens for authentication.
-- **RBAC**: Role-based access control for user permissions.
 - **Swagger**: API documentation and testing tool.
 - **Redis**: In-memory data structure store used for queuing.
 - **MySQL**: Relational database for storing application data.
+- **Class Validator** For validation of input information
 
 ## Contributions & Feedback
 
