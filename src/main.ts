@@ -29,7 +29,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
 
-  await app.listen(appPort);
+  await app.listen(appPort , '0.0.0.0');
 }
 
 bootstrap();

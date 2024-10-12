@@ -1,84 +1,73 @@
-# ShopNest
+# ShopNest - E-commerce Backend API
 
-**ShopNest** is an e-commerce platform built with **NestJS**, designed to demonstrate a clean and well-structured project that covers essential functionalities such as user management, product handling, shopping cart, ticketing system, and more. This project aims to help developers understand how to implement RESTful APIs, JWT-based authentication, RBAC security, and CRUD operations in NestJS.
-
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-- [Environment Variables](#environment-variables)
-- [API Routes](#api-routes)
-  - [App](#app)
-  - [Auth](#auth)
-  - [Baskets](#baskets)
-  - [Blog](#blog)
-  - [Products](#products)
-  - [Tickets](#tickets)
-  - [Users](#users)
-- [Security](#security)
-- [License](#license)
-
----
-
-## Features
-
-- **User Management**: Admin can manage, delete, and retrieve user information.
-- **Ticketing System**: Users can create tickets, and admins can respond, update status, or delete tickets.
-- **Product Management**: Admins can add, edit, and delete products.
-- **Shopping Cart**: Users can manage their shopping baskets by adding, retrieving, or deleting items.
-- **Authentication**: JWT-based authentication with role-based access control (RBAC) for protecting routes.
-- **CRUD Operations**: Fully implemented Create, Read, Update, Delete (CRUD) functionality for all resources.
-
----
-
-## Installation
-
-To run ShopNest locally, follow these steps:
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/shopnest.git
-    cd shopnest
-    ```
-
-2. Install dependencies:
-    ```bash
-    npm install
-    ```
-
-3. Set up the environment variables. Create a `.env` file in the root directory and add the following variables:
-    ```bash
-    DATABASE_URL=<your-database-url>
-    JWT_SECRET=<your-jwt-secret>
-    ```
-
-4. Run the application:
-    ```bash
-    npm run start
-    ```
-
----
-
-## API Routes
-
-اگر پروژه رو با **Swagger** تعریف کردی و API ها به طور کامل مستندسازی شدن، نیازی نیست تمام جزئیات API رو مجدد در داکیومنت اصلی توضیح بدی. می‌تونی به صورت کلی به Swagger اشاره کنی و لینک دسترسی به داکیومنت Swagger رو قرار بدی. این باعث می‌شه داکیومنت اصلی سبک‌تر و قابل‌فهم‌تر بشه و تمرکز اصلی روی نکات کلی و نحوه راه‌اندازی پروژه باشه.
-
-برای مثال، به جای ذکر دقیق API ها، می‌تونی بخشی به این شکل در داکیومنت اضافه کنی:
-
----
+This repository contains the backend API for **ShopNest**, an e-commerce application built using **NestJS**. It is designed to be a learning resource for those interested in mastering **NestJS**, as well as a robust backend solution for developers building e-commerce platforms or integrating with frontend applications.
 
 ## API Documentation
 
-All API routes and their specifications are documented using **Swagger**. You can access the full API documentation by running the application and navigating to:
+The API is fully documented with **Swagger**, and you can access it via [this link](https://nest-shop.liara.run/api).
 
-```
-http://localhost:2000/api
-```
+## Features
 
-This Swagger documentation provides a complete reference to all available routes, request parameters, and response formats for the **ShopNest** project.
+- **Authentication System**: Utilizes **JWT** for secure authentication.
+- **Role-Based Access Control (RBAC)**: Supports two roles:
+  - `User`: Basic user permissions.
+  - `Admin`: Elevated privileges for managing the platform.
+- **Queuing System**: Implements **Bull** for job queuing, ensuring efficient processing of tasks.
+- **CRUD Operations**: Complete **CRUD** (Create, Read, Update, Delete) actions are available for all routes, making it easy to manage resources.
+- **Swagger Integration**: Interactive API documentation is available via Swagger for testing and understanding the endpoints.
 
----
+## Prerequisites
 
-## Security
+Make sure you have **Redis** and **MySQL** installed on your system before running the project.
 
-ShopNest uses **JWT (JSON Web Token)** for authentication and **RBAC (Role-Based Access Control)** to secure different routes based on user roles. Regular users have limited access, while admins have full control over the resources.
+## Setup Instructions
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/shopnest.git
+   cd shopnest
+   ```
+
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up the environment variables by creating a `.env` file in the root of the project. Here is the required structure for the `.env` file:
+
+   ```
+   PORT=
+   JWTSECRET=
+   
+   DB_HOST=
+   DB_PORT=
+   DB_USERNAME=
+   DB_PASSWORD=
+   DB_NAME=
+   
+   REDIS_PASSWORD=
+   REDIS_PORT=
+   REDIS_HOST=
+   ```
+
+4. Run the application:
+   ```bash
+   npm run start:dev
+   ```
+
+5. Access the API documentation at [http://localhost:3000/api](http://localhost:3000/api).
+
+## Technologies Used
+
+- **NestJS**: A progressive Node.js framework.
+- **TypeORM**: ORM for database management.
+- **Bull**: Job queue for handling background tasks.
+- **JWT**: JSON Web Tokens for authentication.
+- **RBAC**: Role-based access control for user permissions.
+- **Swagger**: API documentation and testing tool.
+- **Redis**: In-memory data structure store used for queuing.
+- **MySQL**: Relational database for storing application data.
+
+## Contributions & Feedback
+
+This project is open for contributions and feedback. Feel free to create issues or pull requests. For direct suggestions, you can message me on Telegram at [@rezadev](https://t.me/rezadev).
