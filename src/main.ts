@@ -12,7 +12,7 @@ async function bootstrap() {
     .addBearerAuth({ type: 'http' })
     .setDescription(
       `
-    This API is designed for developers who are learning NestJS or need a robust backend for their frontend projects. For more details, check the project repository.`,
+    This API is designed for developers who are learning NestJS or need a robust backend for their frontend projects. For more details, check the project repository. https://github.com/rezadev8/ShopNest`,
     )
     .setVersion('1.0')
     .build()
