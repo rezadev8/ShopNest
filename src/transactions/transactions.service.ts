@@ -16,6 +16,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { plainToInstance } from 'class-transformer';
 import { SerializedTransaction } from './types/serializedTransactions';
 import { TransactionNotFoundException } from './exceptions/transaction-notfound.exception';
+import { ProductService } from 'src/products/products.service';
 
 @Injectable()
 export class TransactionsService {
@@ -25,6 +26,7 @@ export class TransactionsService {
     @Inject(forwardRef(() => BasketService))
     private readonly basketService: BasketService,
     private readonly usersService: UserService,
+    private readonly productService: ProductService,
     @InjectQueue('transactions-queue') private transactionQueue: Queue,
   ) {}
 
@@ -158,6 +160,33 @@ export class TransactionsService {
           message: "The user's shopping cart was not found!",
         };
 
+      const unavailableProducts = [];
+
+      for (const { product, quantity } of findBasket.basketProducts) {
+        const reduceProductQuantity = product.quantity - quantity;
+        if (reduceProductQuantity < 0) {
+          unavailableProducts.push(product);
+        }
+      }
+
+      if (unavailableProducts.length > 0) {
+        transaction.status = Status.CANCELED;
+        await this.transactionsRepository.save(transaction);
+        return {
+          status: 400,
+          message:
+            'Unfortunately, these products are out of stock! Contact support for a refund.',
+          products: unavailableProducts,
+        };
+      }
+
+      for (const { product, quantity } of findBasket.basketProducts) {
+        const reduceProductQuantity = product.quantity - quantity;
+        await this.productService.editProduct(product.id, {
+          quantity: reduceProductQuantity,
+        });
+      }
+
       await this.basketService.clearUserBasket(findBasket);
       transaction.status = Status.CONFIRMED;
       await this.transactionsRepository.save(transaction);
@@ -199,7 +228,7 @@ export class TransactionsService {
   async changeTransactionStatusById(id: number, status: Status) {
     try {
       const transaction = await this.transactionsRepository.findOne({
-        where: { id:Equal(id) },
+        where: { id: Equal(id) },
       });
 
       if (!transaction) throw new TransactionNotFoundException();

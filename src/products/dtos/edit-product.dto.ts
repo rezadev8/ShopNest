@@ -5,25 +5,25 @@ export class EditProductDto {
   @ApiProperty({ example: 'Mouse', required:false })
   @IsOptional()
   @IsNotEmpty()
-  name: string;
+  name?: string;
 
   @ApiProperty({ example: 22, required:false })
   @IsOptional()
   @IsNotEmpty()
-  price: number;
+  price?: number;
 
   @ApiProperty({ example: 'This mouse is made by my spider and it spins itself' , required:false })
   @IsOptional()
   @IsNotEmpty()
-  description: string;
+  description?: string;
 
   @ApiProperty({ example: '/mouse.png', required:false })
   @IsOptional()
   @IsNotEmpty()
-  cover: string;
+  cover?: string;
 
   @ApiProperty({ example: 1, required:false })
   @IsOptional()
   @IsNotEmpty()
-  quantity:number;
+  quantity?:number;
 }

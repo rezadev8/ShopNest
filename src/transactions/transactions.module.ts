@@ -11,6 +11,7 @@ import { BasketProduct } from 'src/baskets/entities/basket-product';
 import { UserService } from 'src/users/users.service';
 import { BullModule } from '@nestjs/bull';
 import { TransactionsProcessor } from './transactions.processor';
+import { ProductService } from 'src/products/products.service';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { TransactionsProcessor } from './transactions.processor';
     BasketService,
     UserService,
     TransactionsProcessor,
+    ProductService
   ],
   exports: [TransactionsService],
 })

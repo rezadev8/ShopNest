@@ -13,7 +13,7 @@ import {
 } from 'src/common/decorators/global.swagger.decorator';
 
 const transactionExample = {
-  id: 75,
+  id: 1,
   token: '72280940-874e-11ef-8042-d36c0929a540',
   amount: 20,
   status: 'canceled',
@@ -104,7 +104,8 @@ export const VerifyTransactionSwagger = () => {
     ApiBadRequestResponse({
       example: {
         statusCode: 400,
-        message: 'Payment not confirmed! contact support',
+        message: 'Payment not confirmed! contact support | Unfortunately, these products are out of stock! Contact support for a refund.',
+        products:[productExample]
       },
       description:
         'When the transaction is not confirmed by the payment gateway',
