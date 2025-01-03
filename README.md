@@ -2,10 +2,6 @@
 
 This repository contains the backend API for **ShopNest**, an e-commerce application built using **NestJS**. It is designed to be a learning resource for those interested in mastering **NestJS**, as well as a robust backend solution for developers building e-commerce platforms or integrating with frontend applications.
 
-## API Documentation
-
-The API is fully documented with **Swagger**, and you can access it via [this link](https://nest-shop.liara.run/api).
-
 ## Features
 
 - **Authentication System**: Utilizes **JWT** for secure authentication.
