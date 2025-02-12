@@ -62,7 +62,7 @@ export const DeletePostSwagger = () => {
     ApiResponse({
       status: 200,
       example: {
-        message: 'Post deleted successfuly!',
+        message: 'Post deleted successfully!',
         post: {
           id: '18',
         },
@@ -84,7 +84,7 @@ export const EditPostSwagger = () => {
     ApiResponse({
       status: 200,
       example: {
-        message: 'Post edited successfuly',
+        message: 'Post edited successfully',
         post: {
           id: 1,
         },

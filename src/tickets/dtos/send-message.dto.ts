@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 
-export class SendMessagetDto {
+export class SendMessageDto {
   @ApiProperty({
     example: 'Ticket title',
     required: false,

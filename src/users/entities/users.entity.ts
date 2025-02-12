@@ -2,8 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Role } from 'src/auth/enums/role.enum';
 import { Post } from 'src/blog/entities/posts';
 import { Product } from 'src/products/entities/products.entity';
-import { Ticket } from 'src/tickets/entities/tickets.entitie';
-import { Transaction } from 'src/transactions/entities/transactions.entitie';
+import { Ticket } from 'src/tickets/entities/tickets.entity';
+import { Transaction } from 'src/transactions/entities/transactions.entity';
 import {
   Column,
   CreateDateColumn,

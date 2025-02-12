@@ -34,7 +34,7 @@ export const ChangeTransactionStatusSwagger = () => {
     }),
     ApiOkResponse({
       example: {
-        message: 'Ticket status changed successfuly',
+        message: 'Ticket status changed successfully',
         ticket: {
           id: 1,
           status: 'closed',

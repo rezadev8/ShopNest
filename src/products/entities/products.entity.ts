@@ -17,7 +17,7 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ApiProperty({ example: 'Keyborad' })
+  @ApiProperty({ example: 'Keyboard' })
   @Column({ unique: false })
   name: string;
 

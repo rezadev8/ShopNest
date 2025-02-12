@@ -29,7 +29,7 @@ export class TransactionsController {
   constructor(private readonly transactionService: TransactionsService) {}
 
   @ChangeTransactionStatusSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Patch('/:id/transaction')
@@ -44,7 +44,7 @@ export class TransactionsController {
   }
 
   @GetTransactionsSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
   @Get('')
   getTransactions(
@@ -95,7 +95,7 @@ export class TransactionsController {
   }
   
   @DeleteTransactionSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
   @Delete('/:id/transaction')
   removeTransaction(@Param() {id}){

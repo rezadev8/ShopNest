@@ -51,11 +51,11 @@ export class ProductController {
   }
 
   @CreateProductSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   @Post('product')
-  newPoduct(
+  newProduct(
     @CurrentUser() currentUser: userInterface,
     @Body() newProductDto: NewProductDto,
   ) {
@@ -63,7 +63,7 @@ export class ProductController {
   }
 
   @EditProductSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   @Patch('/:id/product')
@@ -72,7 +72,7 @@ export class ProductController {
   }
 
   @DeleteProductSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
   @Delete('/:id/product')
   deleteProduct(@Param() { id }) {

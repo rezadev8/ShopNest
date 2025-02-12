@@ -45,7 +45,7 @@ export const CreateProductSwagger = () => {
         ...productExample,
         owner: userExample,
       },
-      description: 'Product created successfuly',
+      description: 'Product created successfully',
       status: 200,
     }),
     InternalServerErrorSwagger({
@@ -66,7 +66,7 @@ export const EditProductSwagger = () => {
     }),
     ApiResponse({
       example: {
-        message: 'Product edited successfuly',
+        message: 'Product edited successfully',
         product: {
           id: 1,
         },
@@ -98,9 +98,9 @@ export const DeleteProductSwagger = () => {
       type: 'integer',
     }),
     ApiResponse({
-      description: 'Product deleted successfuly',
+      description: 'Product deleted successfully',
       example: {
-        message: 'Product deleted successfuly',
+        message: 'Product deleted successfully',
         product: {
           id: 1,
         },

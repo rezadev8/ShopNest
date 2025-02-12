@@ -38,7 +38,7 @@ export class BlogController {
   }
 
   @CreatePostSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('post')
@@ -50,7 +50,7 @@ export class BlogController {
   }
 
   @DeletePostSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
   @Delete(':id/post')
   deletePost(@Param() { id }) {
@@ -58,7 +58,7 @@ export class BlogController {
   }
 
   @EditPostSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Patch('/:id/post')

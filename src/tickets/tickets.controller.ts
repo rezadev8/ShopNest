@@ -15,7 +15,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { userInterface } from 'src/users/types/user';
 import { TicketService } from './tickets.service';
-import { SendMessagetDto } from './dtos/send-message.dto';
+import { SendMessageDto } from './dtos/send-message.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/enums/role.enum';
 import { UpdateStatusDto } from './dtos/update-status.dto';
@@ -45,7 +45,7 @@ export class TicketsController {
   @SendMessageSwagger()
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('/send-message')
-  sendMessage(@Req() req, @Body() sendMessageDto: SendMessagetDto) {
+  sendMessage(@Req() req, @Body() sendMessageDto: SendMessageDto) {
     return this.ticketService.sendMessage(req.user?.id, sendMessageDto);
   }
 
@@ -56,14 +56,14 @@ export class TicketsController {
   }
 
   @DeleteTicketSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @Delete(':id/ticket')
   deleteTicket(@Param() { id }) {
     return this.ticketService.deleteTicket(id);
   }
 
   @UpdateTicketStatusSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Patch('/:id/status')
   async updateTicketStatus(

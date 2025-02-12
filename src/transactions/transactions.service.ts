@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Transaction } from './entities/transactions.entitie';
+import { Transaction } from './entities/transactions.entity';
 import { Equal, Repository } from 'typeorm';
 import { BasketService } from 'src/baskets/baskets.service';
 import { UserService } from 'src/users/users.service';

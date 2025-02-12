@@ -69,7 +69,7 @@ export class UserService {
 
       await this.userRepository.remove(user);
 
-      return { message: 'User deleted successfuly!', user: { id } };
+      return { message: 'User deleted successfully!', user: { id } };
     } catch (error) {
       console.log(error);
       if (!error.response)

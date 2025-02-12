@@ -3,7 +3,7 @@ import { TransactionsController } from './transactions.controller';
 import { TransactionsService } from './transactions.service';
 import { User } from 'src/users/entities/users.entity';
 import { Product } from 'src/products/entities/products.entity';
-import { Transaction } from './entities/transactions.entitie';
+import { Transaction } from './entities/transactions.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BasketService } from 'src/baskets/baskets.service';
 import { Basket } from 'src/baskets/entities/baskets';

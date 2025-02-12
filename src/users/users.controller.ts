@@ -32,21 +32,21 @@ export class UsersController {
   constructor(private usersService: UserService) {}
 
   @GetAllUsersSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @Get()
   getUsers(@Query() query) {
     return this.usersService.getUsers(query);
   }
 
   @DeleteUserSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @Delete('/:id')
   deleteUser(@Param() { id }) {
     return this.usersService.deleteUser(id);
   }
 
   @GetUserByIdSwagger()
-  @Roles(Role.ADNIM)
+  @Roles(Role.ADMIN)
   @Get('/:id/user')
   async getUserById(@Param() { id }) {
     try {

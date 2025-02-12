@@ -18,8 +18,8 @@ export class AuthService {
   ) {}
 
   @Post('signup')
-  signUp(@Body() createUserdto: CreateUserDto) {
-    return this.usersService.createUser(createUserdto);
+  signUp(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.createUser(createUserDto);
   }
 
   async signIn(

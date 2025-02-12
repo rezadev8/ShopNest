@@ -10,7 +10,7 @@ import { BasketProduct } from './entities/basket-product';
 import { ProductService } from 'src/products/products.service';
 import { UserService } from 'src/users/users.service';
 import { TransactionsService } from 'src/transactions/transactions.service';
-import { Transaction } from 'src/transactions/entities/transactions.entitie';
+import { Transaction } from 'src/transactions/entities/transactions.entity';
 import { BullModule } from '@nestjs/bull';
 
 @Module({

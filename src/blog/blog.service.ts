@@ -69,7 +69,7 @@ export class BlogService {
       if (!post) throw new NotFoundException('Post not found!');
       await this.postRepository.remove(post);
 
-      return { message: 'Post deleted successfuly!', post: { id: postId } };
+      return { message: 'Post deleted successfully!', post: { id: postId } };
     } catch (error) {
       if (!error?.response)
         throw new InternalServerErrorException(
@@ -86,7 +86,7 @@ export class BlogService {
 
       await this.postRepository.save({ ...post, ...editPostDto });
 
-      return { message: 'Post edited successfuly', post: { id: postId } };
+      return { message: 'Post edited successfully', post: { id: postId } };
     } catch (error) {
       if (!error?.response)
         throw new InternalServerErrorException(

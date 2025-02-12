@@ -45,7 +45,7 @@ export class ProductService {
     }
   }
 
-  async createProduct(newProdct: NewProductDto, user: userInterface) {
+  async createProduct(newProduct: NewProductDto, user: userInterface) {
     const findUser = await this.userService.findOne(user.id);
 
     if (!findUser)
@@ -53,7 +53,7 @@ export class ProductService {
 
     try {
       const product = this.productRepository.create({
-        ...newProdct,
+        ...newProduct,
         owner: findUser
       });
 
@@ -82,7 +82,7 @@ export class ProductService {
       if (!product) throw new NotFoundException('Product not found!');
       await this.productRepository.save({ ...product, ...editProductDto });
 
-      return { message: 'Product edited successfuly', product: { id } };
+      return { message: 'Product edited successfully', product: { id } };
     } catch (error) {
       if (!error.response)
         throw new InternalServerErrorException(
@@ -99,7 +99,7 @@ export class ProductService {
 
       await this.productRepository.remove(product);
 
-      return { message: 'Product deleted successfuly', product: { id } };
+      return { message: 'Product deleted successfully', product: { id } };
     } catch (error) {
       if (!error.response)
         throw new InternalServerErrorException(

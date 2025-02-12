@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/products.entity';
 import { UserService } from 'src/users/users.service';
 import { User } from 'src/users/entities/users.entity';
-import { Transaction } from 'src/transactions/entities/transactions.entitie';
+import { Transaction } from 'src/transactions/entities/transactions.entity';
 
 @Module({
   imports:[TypeOrmModule.forFeature([Product , User , Transaction]) ],

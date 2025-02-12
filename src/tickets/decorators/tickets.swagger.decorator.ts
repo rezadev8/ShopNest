@@ -36,7 +36,7 @@ export const SendMessageSwagger = () => {
     ApiResponse({
       status: 201,
       example: {
-        message: 'Message sended successfuly!',
+        message: 'Message sended successfully!',
         ticket: {
           chatId: '3eb15bd0-84e6-11ef-a67a-35b458e2a6ce',
           user: {
@@ -90,7 +90,7 @@ export const DeleteTicketSwagger = () => {
     ApiParam({ name: 'id', description: 'Ticket chatID' }),
     ApiResponse({
       example: {
-        message: 'Ticket deleted succssfuly',
+        message: 'Ticket deleted successfully',
         ticket: {
           chatId: '180aee90-83df-11ef-abc7-dda598c33e90',
         },
@@ -115,7 +115,7 @@ export const UpdateTicketStatusSwagger = () => {
     }),
     ApiResponse({
       example: {
-        message: 'Ticket status changed successfuly',
+        message: 'Ticket status changed successfully',
         ticket: {
           id: 1,
           status: 'open',
@@ -126,7 +126,7 @@ export const UpdateTicketStatusSwagger = () => {
     }),
     NotFoundTicketSwagger(),
     InternalServerErrorSwagger({
-      description: 'Server error in chanhong ticket status',
+      description: 'Server error in changing ticket status',
       message: 'Uh-oh! We hit a snag on changing ticket status!',
     }),
   );

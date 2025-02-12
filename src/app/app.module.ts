@@ -12,13 +12,13 @@ import { Basket } from '../baskets/entities/baskets';
 import { BasketProduct } from '../baskets/entities/basket-product';
 import { BlogModule } from '../blog/blog.module';
 import { Post } from '../blog/entities/posts';
-import { App } from './entities/app-info.entitie';
-import { Ticket } from 'src/tickets/entities/tickets.entitie';
+import { App } from './entities/app-info.entity';
+import { Ticket } from 'src/tickets/entities/tickets.entity';
 import { TicketsModule } from 'src/tickets/tickets.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TransactionsModule } from 'src/transactions/transactions.module';
-import { Transaction } from 'src/transactions/entities/transactions.entitie';
+import { Transaction } from 'src/transactions/entities/transactions.entity';
 import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 

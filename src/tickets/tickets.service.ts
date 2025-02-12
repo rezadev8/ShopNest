@@ -5,9 +5,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Ticket } from './entities/tickets.entitie';
+import { Ticket } from './entities/tickets.entity';
 import { Equal, IsNull, Not, Repository } from 'typeorm';
-import { SendMessagetDto } from './dtos/send-message.dto';
+import { SendMessageDto } from './dtos/send-message.dto';
 import { UserService } from 'src/users/users.service';
 import { v1 as uuidv4 } from 'uuid';
 import { Status } from './enums/status.enum';
@@ -49,7 +49,7 @@ export class TicketService {
     }
   }
 
-  async sendMessage(userId: number, sendMessageDto: SendMessagetDto) {
+  async sendMessage(userId: number, sendMessageDto: SendMessageDto) {
     try {
       const user = await this.usersService.findOne(userId);
       let chatId = sendMessageDto.chatId;
@@ -77,7 +77,7 @@ export class TicketService {
       });
 
       return {
-        message: 'Message sended successfuly!',
+        message: 'Message sended successfully!',
         ticket: { chatId, user: { role: user.role } },
       };
     } catch (error) {
@@ -114,7 +114,7 @@ export class TicketService {
 
       await this.ticketRepository.remove(tickets);
 
-      return { message: 'Ticket deleted succssfuly', ticket: { chatId } };
+      return { message: 'Ticket deleted successfully', ticket: { chatId } };
     } catch (error) {
       console.log(error);
       if (!error.response)
@@ -136,7 +136,7 @@ export class TicketService {
       await this.ticketRepository.save(ticket);
 
       return {
-        message: 'Ticket status changed successfuly',
+        message: 'Ticket status changed successfully',
         ticket: { id: ticket.id, status },
       };
     } catch (error) {

@@ -14,7 +14,7 @@ export class TransactionsProcessor {
   }
 
   @Process({name:'verify-payment' , concurrency:80})
-  async handleVerifyPyament(job: Job<any>) {
+  async handleVerifyPayment(job: Job<any>) {
     const response  = await this.transactionsService.processVerifyPayment(job.data);
 
     return response
