@@ -3,16 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { UsersController } from './users.controller';
 import { UserService } from './users.service';
+import { mockSerializedUser, mockUser } from '../../test/mocks/users/users.mock';
 
 describe('UsersController', () => {
   let controller: UsersController;
-
-  let user = {
-    id: 1,
-    email: 'string',
-    name: 'string',
-    phone: 1,
-  };
 
   const mockUsersService = {
     findOne: jest.fn(),
@@ -46,10 +40,9 @@ describe('UsersController', () => {
 
   describe('Getting user', () => {
     it('Should get a user', async () => {
-      // mockUsersService.findOne.mockReturnValue( new NotFoundException('User not found!'))
-      mockUsersService.findOne.mockReturnValue(user);
+      mockUsersService.findOne.mockReturnValueOnce(mockUser);
       const result = await controller.getUser(req);
-      expect(result).toEqual(user);
+      expect(result).toEqual(mockSerializedUser);
     });
 
     it('Should get not found exception', async () => {
@@ -64,12 +57,7 @@ describe('UsersController', () => {
   describe('Getting all users', () => {
     it('Should return all users', async () => {
       mockUsersService.getUsers.mockReturnValue([
-        {
-          id: 1,
-          email: 'string',
-          name: 'string',
-          phone: 1,
-        },
+        mockSerializedUser
       ]);
       const query = { skip: 20, take: 2 };
       const result = await controller.getUsers(query);
@@ -95,10 +83,10 @@ describe('UsersController', () => {
 
   describe('Get user by id', () => {
     it('Should return user', async () => {
-      mockUsersService.findOne.mockReturnValue(user);
+      mockUsersService.findOne.mockReturnValue(mockUser);
       const result = await controller.getUser(req);
 
-      expect(result).toEqual(user);
+      expect(result).toEqual(mockSerializedUser);
     });
   });
 });

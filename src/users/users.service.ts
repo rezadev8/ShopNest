@@ -89,6 +89,7 @@ export class UserService {
 
       return {users:plainToInstance(SerializedUser,entities) , total}
     } catch (error) {
+      console.log(error)
       throw new InternalServerErrorException(
         'Unfortunately, there was an issue on getting users!',
       );

@@ -3,31 +3,12 @@ import { UserService } from './users.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { NotFoundException } from '@nestjs/common';
+import { mockUser, mockUsersRepository } from '../../test/mocks/users/users.mock';
 
 describe('UsersService', () => {
   let service: UserService;
 
-  const user = {
-    email: 'rezabahmani.dev@gmail.com',
-    phone: 9123456789,
-    password: '$2b$10$rdnBk.jmqishnrmddsoqceg5DsYjAB1YbFrVfNOa5ETs/vjcGHaom',
-    name: 'Reza',
-    id: 2,
-    role: 'user',
-    createdAt: '2025-02-13T14:32:07.438Z',
-    updatedAt: '2025-02-13T14:32:07.438Z',
-  };
-
-  const { password, role, ...serializedUser } = user;
-
-  const mockUsersRepository = {
-    findOneBy: jest.fn().mockResolvedValue(user),
-    create: jest.fn().mockReturnValue(user),
-    save: jest.fn().mockResolvedValue(user),
-    findOne: jest.fn().mockResolvedValue(user),
-    remove: jest.fn().mockResolvedValue({ ...user, id: undefined }),
-    findAndCount:jest.fn().mockResolvedValue([[user] , 1])
-  };
+  const { password, role, ...serializedUser } = mockUser;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,19 +30,19 @@ describe('UsersService', () => {
 
   describe('Find user', () => {
     it('Should find one user', async () => {
-      await expect(service.findOne(1)).resolves.toEqual(user);
+      await expect(service.findOne(1)).resolves.toEqual(mockUser);
     });
 
     it('Should find one user by user name', async () => {
       expect(
         await service.findOneByUserName('rezabahmani.dev@gmail.com'),
-      ).toEqual(user);
+      ).toEqual(mockUser);
     });
 
     it('Should find user by props', async () => {
       expect(
         await service.findOneByUserName({ email: 'rezabahmani.dev@gmail.com' }),
-      ).toEqual(user);
+      ).toEqual(mockUser);
     });
 
     it('Should return users' , async ()  => {
