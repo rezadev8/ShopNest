@@ -1,14 +1,8 @@
-import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
-import {
-  mockSerializedUser,
-  mockUser,
-} from '../../test/mocks/users/users.mock';
 import { BlogController } from './blog.controller';
 import { BlogService } from './blog.service';
-import { mockPost } from '../../test/mocks/blog/blog.mock';
-import { CreatePostDto } from './dtos/create-post.dto';
+import { createPostDto, mockPost } from '../../test/mocks/blog/blog.mock';
 
 describe('BlogController', () => {
   let controller: BlogController;
@@ -54,13 +48,6 @@ describe('BlogController', () => {
   });
 
   it('Should create and return post', () => {
-    const dto = {
-      title: 'Hello world',
-      content: 'Are you the world or me?',
-      thumbnail: '/world.png',
-      keyword: 'me , world',
-    };
-
     const user = {
       id: 2,
       email: 'rezabahmani.dev@gmail.com',
@@ -70,7 +57,7 @@ describe('BlogController', () => {
       updatedAt: '2025-02-13T14:32:07.438Z',
     };
 
-    expect(controller.createPost(dto, user)).toEqual(mockPost);
+    expect(controller.createPost(createPostDto, user)).toEqual(mockPost);
     expect;
   });
 

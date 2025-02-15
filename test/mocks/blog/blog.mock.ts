@@ -16,6 +16,20 @@ export const mockPost = {
   },
 };
 
-export const mockBlogRepository = {
-  findAndCount: jest.fn().mockReturnValue([mockPost, 1]),
+export const mockPostRepository = {
+  findAndCount: jest.fn().mockReturnValue([[mockPost], 1]),
+  findOnePost: jest
+    .fn()
+    .mockReturnValue({ ...mockPost, author: { name: mockPost.author.name } }),
+  save: jest.fn().mockReturnValue(mockPost),
+  remove: jest.fn(),
+  find: jest.fn().mockReturnValue([mockPost]),
+  findOneBy:jest.fn().mockReturnValue(mockPost)
+};
+
+export const createPostDto = {
+  title: 'Hello world',
+  content: 'Are you the world or me?',
+  thumbnail: '/world.png',
+  keyword: 'me , world',
 };
