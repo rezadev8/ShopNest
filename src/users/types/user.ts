@@ -3,6 +3,6 @@ export interface userInterface {
   email: string;
   phone: number;
   password: string;
-  createAt: number;
-  updatedAt: number;
+  createdAt: string;
+  updatedAt: string;
 }
