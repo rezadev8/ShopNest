@@ -5,7 +5,7 @@ import { UserModule } from '../src/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../src/users/entities/users.entity';
 import { Ticket } from '../src/tickets/entities/tickets.entity';
-import { mockSerializedUser, mockUser } from './mocks/users/users.mock';
+import { mockUser } from './mocks/users/users.mock';
 import { AuthGuard } from '../src/auth/guards/auth.guard';
 import { RolesGuard } from '../src/auth/guards/role.guard';
 import { Product } from 'src/products/entities/products.entity';
