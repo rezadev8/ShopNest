@@ -5,13 +5,13 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UserService } from '../users/users.service';
+import { UserService } from '../../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { comparePassword } from 'src/utils/bcrypt';
 import { CreateUserDto } from './dtos/create-user.dto';
 
 @Injectable()
-export class AuthService {
+export class JwtAuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,

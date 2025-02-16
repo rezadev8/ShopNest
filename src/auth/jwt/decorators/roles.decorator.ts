@@ -1,6 +1,6 @@
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
 import { Role } from '../enums/role.enum';
-import { RolesGuard } from '../guards/role.guard';
+import { JwtRolesGuard } from '../guards/role.guard';
 import { ApiForbiddenResponse } from '@nestjs/swagger';
 
 export const ROLES_KEY = 'roles';
@@ -8,7 +8,7 @@ export const ROLES_KEY = 'roles';
 export const Roles = (...roles: [Role, ...Role[]]) => {
   return applyDecorators(
     SetMetadata(ROLES_KEY, roles),
-    UseGuards(RolesGuard),
+    UseGuards(JwtRolesGuard),
     ApiForbiddenResponse({
       example: {
         message: 'Forbidden resource',

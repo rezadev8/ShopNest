@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
 import { BasketService } from './baskets.service';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
 import { userInterface } from 'src/users/types/user';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { ApiTags } from '@nestjs/swagger';
@@ -8,7 +8,7 @@ import { AddProductToBasketSwagger, GetUserBasketSwagger, RemoveProductFromBaske
 import { UnauthorizedSwagger } from 'src/common/decorators/global.swagger.decorator';
 
 @UnauthorizedSwagger()
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('Baskets')
 @Controller('baskets')
 export class BasketsController {

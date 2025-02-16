@@ -14,9 +14,9 @@ import {
 } from '@nestjs/common';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { BlogService } from './blog.service';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Role } from 'src/auth/enums/role.enum';
+import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
+import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
+import { Role } from 'src/auth/jwt/enums/role.enum';
 
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { userInterface } from 'src/users/types/user';
@@ -41,7 +41,7 @@ export class BlogController {
 
   @CreatePostSwagger()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Post('post')
   createPost(
@@ -53,7 +53,7 @@ export class BlogController {
 
   @DeletePostSwagger()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id/post')
   deletePost(@Param() { id }) {
     return this.blogService.deletePost(id);
@@ -61,7 +61,7 @@ export class BlogController {
 
   @EditPostSwagger()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Patch('/:id/post')
   editPost(@Param() { id }, @Body() editPostDto: EditPostDto) {

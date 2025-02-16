@@ -7,7 +7,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { JwtAuthService } from './jwt-auth.service';
 import { LoginDto } from './dtos/sign-in.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -16,9 +16,9 @@ import { Throttle } from '@nestjs/throttler';
 
 @Throttle({default:{ttl:60000 , limit:3}})
 @ApiTags('Auth')
-@Controller('auth')
-export class AuthController {
-  constructor(private authService: AuthService) {}
+@Controller('auth/jwt')
+export class JwtAuthController {
+  constructor(private authService: JwtAuthService) {}
 
   @SignUpSwagger()
   @HttpCode(HttpStatus.CREATED)

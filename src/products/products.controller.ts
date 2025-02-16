@@ -14,12 +14,12 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ProductService } from './products.service';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
 import { NewProductDto } from './dtos/new-product.dto';
 import { userInterface } from 'src/users/types/user';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Role } from 'src/auth/enums/role.enum';
+import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
+import { Role } from 'src/auth/jwt/enums/role.enum';
 import { EditProductDto } from './dtos/edit-product.dto';
 import {  ApiTags } from '@nestjs/swagger';
 import {
@@ -54,7 +54,7 @@ export class ProductController {
 
   @CreateProductSwagger()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   @Post('product')
   newProduct(
@@ -66,7 +66,7 @@ export class ProductController {
 
   @EditProductSwagger()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   @Patch('/:id/product')
   editProduct(@Param() { id }, @Body() editProductDto: EditProductDto) {
@@ -75,7 +75,7 @@ export class ProductController {
 
   @DeleteProductSwagger()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete('/:id/product')
   deleteProduct(@Param() { id }) {
     return this.productService.deleteProduct(id);

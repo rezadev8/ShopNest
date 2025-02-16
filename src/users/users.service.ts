@@ -8,7 +8,7 @@ import { User } from './entities/users.entity';
 import { Equal, Repository } from 'typeorm';
 import { encodePassword } from 'src/utils/bcrypt';
 import {  plainToInstance } from 'class-transformer';
-import { CreateUserDto } from 'src/auth/dtos/create-user.dto';
+import { CreateUserDto } from 'src/auth/jwt/dtos/create-user.dto';
 import { SerializedUser } from './types/serializedUser';
 
 @Injectable()

@@ -10,9 +10,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './users.service';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { Role } from 'src/auth/enums/role.enum';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
+import { Role } from 'src/auth/jwt/enums/role.enum';
+import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import {
   DeleteUserSwagger,
@@ -28,7 +28,7 @@ import { Throttle } from '@nestjs/throttler';
 @Throttle({default:{ttl:60000 , limit:20}})
 @ApiTags('User')
 @UnauthorizedSwagger()
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UserService) {}

@@ -11,13 +11,13 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { userInterface } from 'src/users/types/user';
 import { TicketService } from './tickets.service';
 import { SendMessageDto } from './dtos/send-message.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Role } from 'src/auth/enums/role.enum';
+import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
+import { Role } from 'src/auth/jwt/enums/role.enum';
 import { UpdateStatusDto } from './dtos/update-status.dto';
 import { ApiTags } from '@nestjs/swagger';
 import {
@@ -33,7 +33,7 @@ import { Throttle } from '@nestjs/throttler';
 @Throttle({default:{ttl:120000 , limit:20}})
 @UnauthorizedSwagger()
 @ApiTags('Tickets')
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketService: TicketService) {}

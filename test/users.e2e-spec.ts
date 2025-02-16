@@ -6,8 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../src/users/entities/users.entity';
 import { Ticket } from '../src/tickets/entities/tickets.entity';
 import { mockUser } from './mocks/users/users.mock';
-import { AuthGuard } from '../src/auth/guards/auth.guard';
-import { RolesGuard } from '../src/auth/guards/role.guard';
+import { JwtAuthGuard } from '../src/auth/jwt/guards/auth.guard';
+import { JwtRolesGuard } from '../src/auth/jwt/guards/role.guard';
 import { Product } from 'src/products/entities/products.entity';
 import { Basket } from 'src/baskets/entities/baskets';
 import { BasketProduct } from 'src/baskets/entities/basket-product';
@@ -48,7 +48,7 @@ describe('UserController (e2e)', () => {
         }),
       ],
     })
-      .overrideGuard(AuthGuard)
+      .overrideGuard(JwtAuthGuard)
       .useValue({
         canActivate: jest.fn((context) => {
           const request = context.switchToHttp().getRequest();
@@ -57,7 +57,7 @@ describe('UserController (e2e)', () => {
           return true;
         }),
       })
-      .overrideGuard(RolesGuard)
+      .overrideGuard(JwtRolesGuard)
       .useValue({ canActivate: () => true })
       .compile();
 

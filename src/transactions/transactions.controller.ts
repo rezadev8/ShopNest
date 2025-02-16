@@ -14,10 +14,10 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
 import { VerifyPaymentDto } from './dtos/verify-payment.dto';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { Role } from 'src/auth/enums/role.enum';
+import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
+import { Role } from 'src/auth/jwt/enums/role.enum';
 import { Status } from './enums/status.enum';
 import { ChangeTransactionStatusDto } from './dtos/change-status.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -32,7 +32,7 @@ export class TransactionsController {
 
   @ChangeTransactionStatusSwagger()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @Patch('/:id/transaction')
   changeTransactionStatus(
@@ -47,7 +47,7 @@ export class TransactionsController {
 
   @GetTransactionsSwagger()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('')
   getTransactions(
     @Query() query: { skip: number; take: number; status: Status },
@@ -60,14 +60,14 @@ export class TransactionsController {
   }
 
   @GetUserTransactionsSwagger()
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('transaction')
   async getUserTransactions(@Req() req){
     return this.transactionService.getUserTransactions(req.user?.id)
   }
 
   @BuyProductsSwagger()
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('buy')
   async buyProducts(@Req() req) {
     const response = await this.transactionService.addTransactionToQueue(
@@ -98,7 +98,7 @@ export class TransactionsController {
   
   @DeleteTransactionSwagger()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete('/:id/transaction')
   removeTransaction(@Param() {id}){
     return this.transactionService.deleteTransaction(id)

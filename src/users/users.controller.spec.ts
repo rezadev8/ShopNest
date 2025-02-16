@@ -1,6 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
 import { UsersController } from './users.controller';
 import { UserService } from './users.service';
 import { mockSerializedUser, mockUser } from '../../test/mocks/users/users.mock';
@@ -27,7 +27,7 @@ describe('UsersController', () => {
     })
       .overrideProvider(UserService)
       .useValue(mockUsersService)
-      .overrideGuard(AuthGuard)
+      .overrideGuard(JwtAuthGuard)
       .useValue({ canActivate: jest.fn(() => true) })
       .compile();
 

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
 import { BlogController } from './blog.controller';
 import { BlogService } from './blog.service';
 import { createPostDto, mockPost } from '../../test/mocks/blog/blog.mock';
@@ -28,7 +28,7 @@ describe('BlogController', () => {
     })
       .overrideProvider(BlogService)
       .useValue(mockBlogService)
-      .overrideGuard(AuthGuard)
+      .overrideGuard(JwtAuthGuard)
       .useValue({ canActivate: jest.fn(() => true) })
       .compile();
 
