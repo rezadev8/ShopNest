@@ -2,10 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import { AppModule } from './app/app.module';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const appPort = process.env?.PORT || 3000;
+
+  app.use(helmet()); 
 
   const config = new DocumentBuilder()
     .setTitle('Nest store')
