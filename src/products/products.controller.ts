@@ -31,7 +31,9 @@ import {
   SearchOnProductsSwagger,
 } from './decorators/products.swagger';
 import { SearchProductDto } from './dtos/search-product.dto';
+import { Throttle } from '@nestjs/throttler';
 
+@Throttle({default:{ttl:60000 , limit:50}})
 @ApiTags('Products')
 @Controller('products')
 export class ProductController {

@@ -22,7 +22,9 @@ import { Status } from './enums/status.enum';
 import { ChangeTransactionStatusDto } from './dtos/change-status.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { BuyProductsSwagger, ChangeTransactionStatusSwagger, DeleteTransactionSwagger, GetTransactionsSwagger, GetUserTransactionsSwagger, VerifyTransactionSwagger } from './decorators/transactions.swagger.decorator';
+import { Throttle } from '@nestjs/throttler';
 
+@Throttle({default:{ttl:60000 , limit:10}})
 @ApiTags('Transactions')
 @Controller('transactions')
 export class TransactionsController {

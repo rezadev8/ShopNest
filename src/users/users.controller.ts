@@ -23,7 +23,9 @@ import {
 import { UnauthorizedSwagger } from 'src/common/decorators/global.swagger.decorator';
 import { plainToInstance } from 'class-transformer';
 import { SerializedUser } from './types/serializedUser';
+import { Throttle } from '@nestjs/throttler';
 
+@Throttle({default:{ttl:60000 , limit:20}})
 @ApiTags('User')
 @UnauthorizedSwagger()
 @UseGuards(AuthGuard)

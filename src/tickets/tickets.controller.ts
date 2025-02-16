@@ -28,7 +28,9 @@ import {
   UpdateTicketStatusSwagger,
 } from './decorators/tickets.swagger.decorator';
 import { UnauthorizedSwagger } from 'src/common/decorators/global.swagger.decorator';
+import { Throttle } from '@nestjs/throttler';
 
+@Throttle({default:{ttl:120000 , limit:20}})
 @UnauthorizedSwagger()
 @ApiTags('Tickets')
 @UseGuards(AuthGuard)

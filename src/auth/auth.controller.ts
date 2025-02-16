@@ -12,7 +12,9 @@ import { LoginDto } from './dtos/sign-in.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInSwagger, SignUpSwagger } from './decorators/auth.swagger';
+import { Throttle } from '@nestjs/throttler';
 
+@Throttle({default:{ttl:60000 , limit:3}})
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {

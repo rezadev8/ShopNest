@@ -21,12 +21,20 @@ import { TransactionsModule } from 'src/transactions/transactions.module';
 import { Transaction } from 'src/transactions/entities/transactions.entity';
 import { ConfigModule } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'public'),
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 60,
+      },
+    ]),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -51,7 +59,7 @@ import { BullModule } from '@nestjs/bull';
       redis: {
         host: process.env.REDIS_HOST || 'localhost',
         port: parseInt(process.env.REDIS_PORT, 10) || 6379,
-        password:process.env.REDIS_PASSWORD || ''
+        password: process.env.REDIS_PASSWORD || '',
       },
     }),
     TypeOrmModule.forFeature([App]),
@@ -64,6 +72,6 @@ import { BullModule } from '@nestjs/bull';
     TransactionsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}

@@ -24,7 +24,9 @@ import { EditPostDto } from './dtos/edit-post.dto';
 import { SearchBlogDto } from './dtos/search-post.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CreatePostSwagger, DeletePostSwagger, EditPostSwagger, GetPostsSwagger, SearchInBlogSwagger } from './decorators/blog.swagger.decorator';
+import { Throttle } from '@nestjs/throttler';
 
+@Throttle({default:{ttl:60000 , limit:50}})
 @ApiTags('Blog')
 @Controller('blog')
 export class BlogController {
