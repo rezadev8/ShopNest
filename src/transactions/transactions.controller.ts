@@ -17,7 +17,7 @@ import { TransactionsService } from './transactions.service';
 import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
 import { VerifyPaymentDto } from './dtos/verify-payment.dto';
 import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
-import { Role } from 'src/auth/jwt/enums/role.enum';
+import { Role } from 'src/auth/enums/role.enum';
 import { Status } from './enums/status.enum';
 import { ChangeTransactionStatusDto } from './dtos/change-status.dto';
 import { ApiTags } from '@nestjs/swagger';

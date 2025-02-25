@@ -19,7 +19,7 @@ import { NewProductDto } from './dtos/new-product.dto';
 import { userInterface } from 'src/users/types/user';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
-import { Role } from 'src/auth/jwt/enums/role.enum';
+import { Role } from 'src/auth/enums/role.enum';
 import { EditProductDto } from './dtos/edit-product.dto';
 import {  ApiTags } from '@nestjs/swagger';
 import {

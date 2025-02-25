@@ -17,7 +17,7 @@ import { userInterface } from 'src/users/types/user';
 import { TicketService } from './tickets.service';
 import { SendMessageDto } from './dtos/send-message.dto';
 import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
-import { Role } from 'src/auth/jwt/enums/role.enum';
+import { Role } from 'src/auth/enums/role.enum';
 import { UpdateStatusDto } from './dtos/update-status.dto';
 import { ApiTags } from '@nestjs/swagger';
 import {

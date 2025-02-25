@@ -1,5 +1,5 @@
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
-import { Role } from '../enums/role.enum';
+import { Role } from '../../enums/role.enum';
 import { JwtRolesGuard } from '../guards/role.guard';
 import { ApiForbiddenResponse } from '@nestjs/swagger';
 

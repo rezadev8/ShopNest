@@ -21,7 +21,7 @@ export class CreateUserDto {
 
   @ApiProperty({ example: '09123456789' })
   @IsPhoneNumber('IR', { message: 'Please enter a valid phone number.' })
-  phone: number;
+  phone?: number;
 
   @ApiProperty({ example: 'Abc12345', minLength:8  })
   @MinLength(8, {
@@ -31,4 +31,6 @@ export class CreateUserDto {
     message: 'Password must include at least one uppercase letter.',
   })
   password: string;
+
+  provider:any
 }

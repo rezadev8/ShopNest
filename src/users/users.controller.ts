@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
-import { Role } from 'src/auth/jwt/enums/role.enum';
+import { Role } from 'src/auth/enums/role.enum';
 import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import {

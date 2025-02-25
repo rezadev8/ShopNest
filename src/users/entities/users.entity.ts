@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from 'src/auth/jwt/enums/role.enum';
+import { Provider } from 'src/auth/enums/provider.enum';
+import { Role } from 'src/auth/enums/role.enum';
 import { Post } from 'src/blog/entities/posts';
 import { Product } from 'src/products/entities/products.entity';
 import { Ticket } from 'src/tickets/entities/tickets.entity';
@@ -34,10 +35,10 @@ export class User {
   @ApiProperty({
     example: '09123456789',
   })
-  @Column({ unique: true, type: 'varchar', length: 15, nullable: false })
+  @Column({ unique: true, type: 'varchar', length: 15, nullable: true })
   phone: number;
 
-  @Column()
+  @Column({nullable:true})
   password: string;
 
   @OneToMany(() => Product, (product) => product.owner, { onDelete: 'CASCADE' })
@@ -52,6 +53,14 @@ export class User {
     default: Role.USER,
   })
   role: Role;
+
+  @Column({
+    type:'enum',
+    nullable:true,
+    enum:Provider,
+    default:null
+  })
+  provider:Provider
 
   @OneToMany(() => Ticket, (ticket) => ticket.user, { onDelete: 'CASCADE' })
   tickets: Ticket[];

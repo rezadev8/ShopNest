@@ -1,13 +1,11 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { JwtAuthService } from './jwt/jwt-auth.service';
-import { UserModule } from '../users/users.module';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtAuthController } from './jwt/jwt-auth.controller';
-import { jwtConstants } from './constants';
-import { DuplicateUserMiddleware } from 'src/users/middlewares/duplicate-user/duplicate-user.middleware';
+import { Module } from '@nestjs/common';
 import { JwtAuthModule } from './jwt/jwt-auth.module';
+import { GoogleOauthModule } from './google-oauth/google-oauth.module';
 
 @Module({
-  imports: [JwtAuthModule],
+  imports: [JwtAuthModule , GoogleOauthModule],
+  exports:[JwtAuthModule]
 })
 export class AuthModule {}
+
+

@@ -16,7 +16,7 @@ import { CreatePostDto } from './dtos/create-post.dto';
 import { BlogService } from './blog.service';
 import { JwtAuthGuard } from 'src/auth/jwt/guards/auth.guard';
 import { Roles } from 'src/auth/jwt/decorators/roles.decorator';
-import { Role } from 'src/auth/jwt/enums/role.enum';
+import { Role } from 'src/auth/enums/role.enum';
 
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { userInterface } from 'src/users/types/user';

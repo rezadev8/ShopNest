@@ -3,8 +3,9 @@ import { JwtAuthService } from './jwt-auth.service';
 import { UserModule } from '../../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtAuthController } from './jwt-auth.controller';
-import { jwtConstants } from '../constants';
 import { DuplicateUserMiddleware } from 'src/users/middlewares/duplicate-user/duplicate-user.middleware';
+import { jwtConstants } from '../constants';
+import { JwtAuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
@@ -14,15 +15,14 @@ import { DuplicateUserMiddleware } from 'src/users/middlewares/duplicate-user/du
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '30d' },
     }),
+    UserModule
   ],
-  providers: [JwtAuthService],
+  providers: [JwtAuthService , JwtAuthGuard],
   controllers: [JwtAuthController],
-  exports: [JwtAuthService],
+  exports: [JwtAuthService , JwtAuthGuard],
 })
 export class JwtAuthModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(DuplicateUserMiddleware)
-      .forRoutes('/auth/signup')
+    consumer.apply(DuplicateUserMiddleware).forRoutes('/auth/jwt/signup');
   }
 }

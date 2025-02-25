@@ -33,6 +33,7 @@
     "@nestjs/swagger": "^7.4.0",
     "@nestjs/throttler": "^6.4.0",
     "@nestjs/typeorm": "^10.0.2",
+    "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "bull": "^4.16.3",
     "class-transformer": "^0.5.1",

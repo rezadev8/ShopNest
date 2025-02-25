@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { Equal, Repository } from 'typeorm';
 import { encodePassword } from 'src/utils/bcrypt';
-import {  plainToInstance } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { CreateUserDto } from 'src/auth/jwt/dtos/create-user.dto';
 import { SerializedUser } from './types/serializedUser';
 
@@ -15,21 +15,27 @@ import { SerializedUser } from './types/serializedUser';
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   async createUser(createUserDto: CreateUserDto) {
+    const { provider } = createUserDto;
     try {
       const newUser = this.userRepository.create({
         phone: +createUserDto.phone,
         email: createUserDto.email,
-        password: createUserDto.password,
+        password: provider ? null : createUserDto.password,
+        provider: provider ? provider : null,
+        name:createUserDto.name
       });
 
-      newUser.password = await encodePassword(newUser.password);
+      if(!provider){
+        newUser.password = await encodePassword(newUser.password);
+      }
+      
       const saveUser = await this.userRepository.save(newUser);
 
       return plainToInstance(SerializedUser, saveUser)
-      
+
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(
@@ -39,7 +45,7 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return this.userRepository.findOneBy({ id:Equal(id) });
+    return this.userRepository.findOneBy({ id: Equal(id) });
   }
 
   async findOneByUserName(username: any) {
@@ -82,12 +88,12 @@ export class UserService {
 
   async getUsers({ skip, take }: { skip?: number; take?: number }) {
     try {
-      const [entities , total] = await this.userRepository.findAndCount({
+      const [entities, total] = await this.userRepository.findAndCount({
         skip: Number(skip) || 0,
         take: Number(take) || 30,
       });
 
-      return {users:plainToInstance(SerializedUser,entities) , total}
+      return { users: plainToInstance(SerializedUser, entities), total }
     } catch (error) {
       console.log(error)
       throw new InternalServerErrorException(

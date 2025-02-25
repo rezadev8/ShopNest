@@ -25,6 +25,7 @@ export class JwtAuthController {
   @UsePipes(new ValidationPipe({ transform: true }))
   @Post('signup')
   signUp(@Body() userDto: CreateUserDto) {
+    
     return this.authService.signUp(userDto);
   }
 
