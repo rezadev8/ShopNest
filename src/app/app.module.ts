@@ -19,10 +19,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TransactionsModule } from 'src/transactions/transactions.module';
 import { Transaction } from 'src/transactions/entities/transactions.entity';
-import { ConfigModule } from '@nestjs/config';
+import {  ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { AppConfigModule } from 'src/config/config.module';
 
 @Module({
   imports: [
@@ -35,25 +36,28 @@ import { APP_GUARD } from '@nestjs/core';
         limit: 60,
       },
     ]),
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      entities: [
-        User,
-        Product,
-        Basket,
-        BasketProduct,
-        Post,
-        App,
-        Ticket,
-        Transaction,
-      ],
-      synchronize: true,
+    AppConfigModule,
+    TypeOrmModule.forRootAsync({
+      useFactory: (config:ConfigService) => ({
+        type: 'mysql',
+        host: config.get<string>('db.host'),
+        port: config.get<number>('db.port'),
+        username: config.get<string>('db.username'),
+        password: config.get<string>('db.password'),
+        database: config.get<string>('db.name'),
+        entities: [
+          User,
+          Product,
+          Basket,
+          BasketProduct,
+          Post,
+          App,
+          Ticket,
+          Transaction,
+        ],
+        synchronize: true,
+      }),
+      inject:[ConfigService]
     }),
     BullModule.forRoot({
       redis: {
@@ -74,4 +78,4 @@ import { APP_GUARD } from '@nestjs/core';
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
-export class AppModule {}
+export class AppModule { }

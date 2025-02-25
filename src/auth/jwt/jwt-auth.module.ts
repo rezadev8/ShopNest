@@ -6,15 +6,29 @@ import { JwtAuthController } from './jwt-auth.controller';
 import { DuplicateUserMiddleware } from 'src/users/middlewares/duplicate-user/duplicate-user.middleware';
 import { jwtConstants } from '../constants';
 import { JwtAuthGuard } from './guards/auth.guard';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     UserModule,
-    JwtModule.register({
-      global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '30d' },
-    }),
+    // JwtModule.register({
+    //   global: true,
+    //   secret: jwtConstants.secret,
+    //   signOptions: { expiresIn: '30d' },
+    // }),
+    JwtModule.registerAsync({
+      imports:[ConfigModule],
+      global:true,
+      useFactory:async (configService:ConfigService) => ({
+        // global:true,
+        secret:configService.get<string>('jwt.secret'),
+        signOptions:{
+          expiresIn:configService.get<string>('jwt.expiresIn')
+        }
+      }),
+      inject:[ConfigService],
+    },
+  ),
     UserModule
   ],
   providers: [JwtAuthService , JwtAuthGuard],
