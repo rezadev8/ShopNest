@@ -11,11 +11,11 @@ export default () => ({
         port: process.env.DB_PORT
     },
     jwt: {
-        secret: "mIss:*mIN;0S-1uLh<pgb~8>5",
-        expiresIn: '30d'
+        secret: process.env.JWT_SECRET,
+        expiresIn: process.env.JWT_EXPIRES_IN
     },
     googleOauth: {
-        clientId: "823443073025-vihjufh6ae4u8ui09109uog1rokj0qv6.apps.googleusercontent.com",
-        clientSecret: "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"
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET
     }
 });

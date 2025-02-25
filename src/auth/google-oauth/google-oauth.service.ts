@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import axios from 'axios';
-import { GOOGLE_OAUTH_CONFIG } from './google-oauth.constants';
 import { Role } from '../enums/role.enum';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GoogleOauthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(private jwtService: JwtService, private readonly configService: ConfigService) { }
+  private GOOGLE_OAUTH_CONFIG = {
+    clientId: this.configService.get<string>('googleOauth.clientId'),
+    clientSecret: this.configService.get<string>('googleOauth.clientSecret'),
+    redirectUri: 'http://localhost:2006/auth/google/callback',
+    authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+    tokenUrl: 'https://oauth2.googleapis.com/token',
+    scope: 'profile email',
+  }
+
 
   getGoogleAuthUrl(): string {
-    const { clientId, redirectUri, authUrl, scope } = GOOGLE_OAUTH_CONFIG;
+    const { clientId, redirectUri, authUrl, scope } = this.GOOGLE_OAUTH_CONFIG;
     const params = new URLSearchParams({
       client_id: clientId,
       redirect_uri: redirectUri,
@@ -21,7 +30,7 @@ export class GoogleOauthService {
   }
 
   async getGoogleTokens(code: string) {
-    const { clientId, clientSecret, redirectUri, tokenUrl } = GOOGLE_OAUTH_CONFIG;
+    const { clientId, clientSecret, redirectUri, tokenUrl } = this.GOOGLE_OAUTH_CONFIG;
     const response = await axios.post(
       tokenUrl,
       new URLSearchParams({
@@ -45,7 +54,7 @@ export class GoogleOauthService {
   }
 
   async generateTokens(googleUser: any) {
-    const payload = { id: googleUser.sub, email: googleUser.email , role:Role.USER };
+    const payload = { id: googleUser.sub, email: googleUser.email, role: Role.USER };
     const token = this.jwtService.sign(payload, { expiresIn: '30d' });
 
     return token
