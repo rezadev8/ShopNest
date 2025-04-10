@@ -4,6 +4,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from './entities/users.entity';
 import { NotFoundException } from '@nestjs/common';
 import { mockUser, mockUsersRepository } from '../../test/mocks/users/users.mock';
+import { Provider } from 'src/auth/enums/provider.enum';
 
 describe('UsersService', () => {
   let service: UserService;
@@ -62,6 +63,7 @@ describe('UsersService', () => {
         phone: 9123456789,
         password: 'As12345',
         name: 'Reza',
+        provider: Provider.EMAIL
       };
 
       expect(await service.createUser(dto)).toEqual(serializedUser);

@@ -13,7 +13,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { SignInSwagger, SignUpSwagger } from './decorators/auth.swagger';
 import { Throttle } from '@nestjs/throttler';
-
+import { Provider } from 'src/auth/enums/provider.enum';
 @Throttle({default:{ttl:60000 , limit:3}})
 @ApiTags('Auth')
 @Controller('auth/jwt')
@@ -25,6 +25,7 @@ export class JwtAuthController {
   @UsePipes(new ValidationPipe({ transform: true }))
   @Post('signup')
   signUp(@Body() userDto: CreateUserDto) {
+    userDto.provider = Provider.EMAIL
     
     return this.authService.signUp(userDto);
   }
